@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "vmArgs": "--module-path C:/JavaFX/javafx-sdk-24/lib --add-modules javafx.controls,javafx.web --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Driver",
+            "request": "launch",
+            "vmArgs": "--module-path C:/JavaFX/javafx-sdk-24/lib --add-modules javafx.controls,javafx.web --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED",
+            "mainClass": "Driver",
+            "projectName": "ScheduleProject_fb59e152"
+        }
+    ]
+}
