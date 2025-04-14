@@ -1,3 +1,3 @@
-public class ReoccurringTask implements Reoccuring {
+public class ReoccurringTask extends Task implements Reoccuring{
     
 }

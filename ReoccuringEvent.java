@@ -1,3 +1,3 @@
-public class ReoccuringEvent implements Reoccuring {
+public class ReoccuringEvent extends Event implements Reoccuring {
     
 }
