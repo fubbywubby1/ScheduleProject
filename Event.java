@@ -1,3 +1,3 @@
-class Event {
+class Event implements timeBlockAble {
     
 }
