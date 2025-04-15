@@ -1,3 +1,3 @@
-interface timeBlockAble {
+interface TimeBlockable {
     
 }
