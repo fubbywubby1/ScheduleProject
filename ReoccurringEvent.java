@@ -3,6 +3,10 @@ public class ReoccurringEvent extends Event implements Reoccurring {
 
     // other stuff tba
 
+    // constructor
+    public ReoccurringEvent() {
+        this.frequencyType = FrequencyType.DAILY; // default value?
+    }
     // getter for frequency type
     @Override
     public FrequencyType getFrequencyType() {
