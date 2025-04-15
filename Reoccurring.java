@@ -1,5 +1,5 @@
 interface Reoccurring {
-    
+    FrequencyType getFrequencyType(); //DAILY, WEEKLY, MONTHLY, YEARLY
 }
 
 public enum FrequencyType {
