@@ -58,6 +58,8 @@ class Event implements timeBlockAble {
             } else {
                 this.startTime = startTime;
             }
+        } else {
+            throw new Exception("Invalid Start time");
         }
     }
 
@@ -68,6 +70,8 @@ class Event implements timeBlockAble {
             } else {
                 this.endTime = endTime;
             }
+        } else {
+            throw new Exception("Invalid end time");
         }
     }
 }
