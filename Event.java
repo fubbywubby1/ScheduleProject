@@ -53,7 +53,7 @@ class Event implements timeBlockAble {
 
     public void setStartTime(int startTime) throws Exception {
         if (startTime >= 0 && startTime < 2400) {
-            if (TimeHandler.checkTimeConflict(new Event(this.name, this.description, this.priority, this.startTime, this.endTime)) == false) {
+            if (TimeHandler.checkTimeConflict(new Event(this.name, this.description, this.priority, startTime, this.endTime)) == false) {
                 throw new Exception("Time Conflict");
             } else {
                 this.startTime = startTime;
@@ -61,7 +61,13 @@ class Event implements timeBlockAble {
         }
     }
 
-    public void setEndTime(int endTime) {
-        return endTime;
+    public void setEndTime(int endTime) throws Exception{
+        if (endTime >= 0 && endTime < 2400) {
+            if (TimeHandler.checkTimeConflict(new Event(this.name, this.description, this.priority, this.startTime, endTime)) == false) {
+                throw new Exception("Time Conflict");
+            } else {
+                this.endTime = endTime;
+            }
+        }
     }
 }
