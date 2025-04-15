@@ -1,11 +1,8 @@
 import java.util.HashMap;
 public class TimeHandler {
-    private HashMap<Integer, Object> timeBlocks;
-    public TimeHandler() {
-        timeBlocks = new HashMap<>();
-    }
+    public static HashMap<Integer, Event> timeBlocks = new HashMap<>();;
 
-    public void addToTimeBlock(Integer key, Task value) throws Exception {
+    public static void addToTimeBlock(Integer key, Task value) throws Exception {
         if (key > 2359 || key < 0)  {
             throw new Exception("Invalid Time");
         } else if (value.equals(null)) {
@@ -15,7 +12,7 @@ public class TimeHandler {
         }
     }
 
-    public void addToTimeBlock(Integer key, Event value) throws Exception {
+    public static void addToTimeBlock(Integer key, Event value) throws Exception {
         if (key > 2359 || key < 0)  {
             throw new Exception("Invalid Time");
         } else if (value.equals(null)) {
@@ -25,15 +22,15 @@ public class TimeHandler {
         }
     }
 
-    public Object getTimeBock(Integer key) {
+    public static Object getTimeBlock(Integer key) {
         return timeBlocks.get(key);
     }
 
-    public void removeTimeBlock(Integer key) {
+    public static void removeTimeBlock(Integer key) {
         timeBlocks.remove(key);
     }
 
-    public void removeTimeBlockByEvent(Object value) throws Exception {
+    public static void removeTimeBlockByEvent(Object value) throws Exception {
         if (value.equals(null)) {
             throw new Exception("Null input");
         } else {
@@ -43,5 +40,25 @@ public class TimeHandler {
                 }
             }
         }
+    }
+
+    public static Boolean checkTimeConflict(Event checkedEvent) {
+        if (timeBlocks.isEmpty() == false) {
+            if (checkedEvent.getStartTime() > 0 && checkedEvent.getEndTime() < 2400) {
+                for (int blockToCheck: timeBlocks.keySet()) {
+                    if (checkedEvent.getStartTime() >= timeBlocks.get(blockToCheck).getStartTime() &&
+                        checkedEvent.getEndTime() <= timeBlocks.get(blockToCheck).getEndTime()) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+        } else {
+            return true;
+        }
+        return false;
     }
 }

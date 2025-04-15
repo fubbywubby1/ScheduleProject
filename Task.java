@@ -1,3 +1,3 @@
-class Task {
+class Task extends Event {
     
 }
