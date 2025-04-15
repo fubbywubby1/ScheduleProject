@@ -3,6 +3,11 @@ public class ReoccurringTask extends Task implements Reoccuring {
 
     // other stuff tba
 
+   // constructor 
+   public ReoccurringTask() {
+        this.frequencyType = FrequencyType.WEEKLY; // different default value than ReoccurringEvent?
+    }
+   
     // getter for frequency type
     @Override
     public FrequencyType getFrequencyType() {
