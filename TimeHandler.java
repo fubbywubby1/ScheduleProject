@@ -1,5 +1,10 @@
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.Date;
 public class TimeHandler {
     public static HashMap<TimeChunk, Event> timeBlocks = new HashMap<>();;
@@ -15,11 +20,11 @@ public class TimeHandler {
         }
     }
 
-    public static Object getTimeBlock(Integer key) {
+    public static Object getTimeBlock(TimeChunk key) {
         return timeBlocks.get(key);
     }
 
-    public static void removeTimeBlock(Integer key) {
+    public static void removeTimeBlock(TimeChunk key) {
         timeBlocks.remove(key);
     }
 
@@ -35,12 +40,13 @@ public class TimeHandler {
         }
     }
 
+    /*
     public static Boolean checkTimeConflict(TimeChunk checkTimeChunk) {
         if (timeBlocks.isEmpty() == false) {
             if (checkTimeChunk.getStartTime().isAfter(LocalTime.MIN) && checkTimeChunk.getEndTime().isBefore(LocalTime.MAX)) {
-                for (int blockToCheck: timeBlocks.keySet()) {
-                    if (checkedEvent.getStartTime() >= timeBlocks.get(blockToCheck).getStartTime() &&
-                        checkedEvent.getEndTime() <= timeBlocks.get(blockToCheck).getEndTime()) {
+                for (TimeChunk blockToCheck: timeBlocks.keySet()) {
+                    if (checkTimeChunk.getStartTime().compareTo(blockToCheck.getStartTime()) >= 0 
+                        && checkTimeChunk.getEndTime().compareTo(blockToCheck.getEndTime()) <= 0) {
                             return false;
                         } else {
                             return true;
@@ -54,4 +60,20 @@ public class TimeHandler {
         }
         return false;
     }
+    */
+
+    public static Boolean checkTimeConflict(TimeChunk checkTimeChunk) {
+        Set<TimeChunk> set = timeBlocks.keySet();
+        Set<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
+                                             .filter(t -> checkTimeChunk.getEndTime().isAfter(t.getStartTime()))
+                                             .filter(t -> checkTimeChunk.getStartTime().isAfter(t.getStartTime()) 
+                                                          || checkTimeChunk.getEndTime().isBefore(t.getEndTime()))
+                                             .collect(Collectors.toSet());
+        if (toCheck.isEmpty() == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
