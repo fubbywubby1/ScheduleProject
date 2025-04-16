@@ -1,3 +1,4 @@
 public class SelfCareScheduler {
-    // more to go here.
+    // this handles all of the self care processes.
+    // ideally, 
 }
