@@ -8,5 +8,20 @@ public class ScheduleGUI {
         // Launch the application
         StartPage startPage = new StartPage();
         startPage.start(new Stage());
-    }    
+    }
+
+    public void startSchedulePage(Stage primaryStage) {
+        SchedulePage schedulePage = new SchedulePage();
+        schedulePage.start(primaryStage);
+    }
+
+    public void startFindExistingSchedulePage(Stage primaryStage) {
+        FindExistingSchedulePage findExistingSchedulePage = new FindExistingSchedulePage();
+        findExistingSchedulePage.start(primaryStage);
+    }
+
+    public void startCreateSchedulePage(Stage primaryStage) {
+        CreateSchedulePage createSchedulePage = new CreateSchedulePage();
+        createSchedulePage.start(primaryStage);
+    }
 }

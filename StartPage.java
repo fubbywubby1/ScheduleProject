@@ -13,12 +13,12 @@ public class StartPage extends Application {
         Button newScheduleButton = new Button("Create New Schedule");
         newScheduleButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         newScheduleButton.setOnAction(e -> {
-             startCreateSchedulePage(primaryStage);
+             ScheduleGUI.startCreateSchedulePage(primaryStage);
         });
         Button loadScheduleButton = new Button("Load Existing Schedule");`
         loadScheduleButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         loadScheduleButton.setOnAction(e -> {
-            startFindExistingSchedulePage(primaryStage);
+            ScheduleGUI.startFindExistingSchedulePage(primaryStage);
         });
     `   VBox layout = new VBox(10);
         layout.getChildren().addAll(newScheduleButton, loadScheduleButton);
@@ -31,13 +31,4 @@ public class StartPage extends Application {
         launch(args);
     }
 
-    private void startFindExistingSchedulePage(Stage primaryStage) {
-        FindExistingSchedulePage findExistingSchedulePage = new FindExistingSchedulePage();
-        findExistingSchedulePage.start(primaryStage);
-    }
-
-    private void startCreateSchedulePage(Stage primaryStage) {
-        CreateSchedulePage createSchedulePage = new CreateSchedulePage();
-        createSchedulePage.start(primaryStage);
-    }
 }
