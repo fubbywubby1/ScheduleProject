@@ -1,14 +1,12 @@
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.time.LocalTime;
-import java.util.Comparator;
-import java.util.Date;
 public class TimeHandler {
-    public static HashMap<TimeChunk, Event> timeBlocks = new HashMap<>();;
+    public static HashMap<TimeChunk, Event> timeBlocks = new HashMap<>();
 
+    //To Do:
+    //Make sure there's not time conflicts when adding a timeBlock
     public static void addToTimeBlock(TimeChunk key, Event value) throws Exception {
         if ((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
             && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN))  {
