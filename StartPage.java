@@ -13,12 +13,12 @@ public class StartPage extends Application {
         Button newScheduleButton = new Button("Create New Schedule");
         newScheduleButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         newScheduleButton.setOnAction(e -> {
-            existingSchedule = false;
+             startCreateSchedulePage(primaryStage);
         });
         Button loadScheduleButton = new Button("Load Existing Schedule");`
         loadScheduleButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         loadScheduleButton.setOnAction(e -> {
-            existingSchedule = true;
+            startFindExistingSchedulePage(primaryStage);
         });
     `   VBox layout = new VBox(10);
         layout.getChildren().addAll(newScheduleButton, loadScheduleButton);
@@ -29,19 +29,15 @@ public class StartPage extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        try {
-            if(existingSchedule) {
-                // Go to FindExistingSchedulePage
-                FindExistingSchedulePage findExistingSchedulePage = new FindExistingSchedulePage();
-                findExistingSchedulePage.start(new Stage());
-            } else {
-                // Go to CreateSchedulePage
-                CreateSchedulePage createSchedulePage = new CreateSchedulePage();
-                createSchedulePage.start(new Stage());
-            }
-        } catch (Exception e) {
-            // fill this in later
-            e.printStackTrace();
-        }
+    }
+
+    private void startFindExistingSchedulePage(Stage primaryStage) {
+        FindExistingSchedulePage findExistingSchedulePage = new FindExistingSchedulePage();
+        findExistingSchedulePage.start(primaryStage);
+    }
+
+    private void startCreateSchedulePage(Stage primaryStage) {
+        CreateSchedulePage createSchedulePage = new CreateSchedulePage();
+        createSchedulePage.start(primaryStage);
     }
 }
