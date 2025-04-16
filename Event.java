@@ -2,15 +2,15 @@ class Event implements TimeBlockable {
     private String name;
     private String description;
     private int priority;
-    private int startTime;
-    private int endTime;
+    private Label label;
+    private Boolean isTask;
 
-    public Event(String name, String description, int priority, int startTime, int endTime) {
+    public Event(String name, String description, int priority, Label label, Boolean isTask) {
         this.name = name;
         this.description = description;
         this.priority = priority;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.label = label;
+        this.isTask = isTask;
     }
 
     public String getName() {
@@ -25,12 +25,12 @@ class Event implements TimeBlockable {
         return priority;
     }
 
-    public int getStartTime() {
-        return startTime;
+    public Label getLable() {
+        return label;
     }
 
-    public int getEndTime() {
-        return endTime;
+    public Boolean getIsTask() {
+        return isTask;
     }
 
     public void setName(String name) {
@@ -51,6 +51,7 @@ class Event implements TimeBlockable {
         }
     }
 
+    /* 
     public void setStartTime(int startTime) throws Exception {
         if (startTime >= 0 && startTime < 2400) {
             if (TimeHandler.checkTimeConflict(new Event(this.name, this.description, this.priority, startTime, this.endTime)) == false) {
@@ -74,4 +75,5 @@ class Event implements TimeBlockable {
             throw new Exception("Invalid end time");
         }
     }
+    */
 }
