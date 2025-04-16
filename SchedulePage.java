@@ -2,7 +2,12 @@ import java.lang.classfile.Label;
 import java.time.LocalDate;
 
 import com.apple.eawt.Application;
-
+/*
+ * SchedulePage.java
+ * This class creates a schedule page for a week.
+ * It displays the days of the week and time slots.
+ * 
+ */
 public class SchedulePage extends Application {
     private static final String[] DAYS = {
         "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
