@@ -40,28 +40,19 @@ public class TimeHandler {
         }
     }
 
-    /*
-    public static Boolean checkTimeConflict(TimeChunk checkTimeChunk) {
-        if (timeBlocks.isEmpty() == false) {
-            if (checkTimeChunk.getStartTime().isAfter(LocalTime.MIN) && checkTimeChunk.getEndTime().isBefore(LocalTime.MAX)) {
-                for (TimeChunk blockToCheck: timeBlocks.keySet()) {
-                    if (checkTimeChunk.getStartTime().compareTo(blockToCheck.getStartTime()) >= 0 
-                        && checkTimeChunk.getEndTime().compareTo(blockToCheck.getEndTime()) <= 0) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-                } else {
-                    return false;
-                }
-        } else {
-            return true;
-        }
-        return false;
-    }
-    */
-
+    /**
+     * To check a given timeChunk,
+     * first, create a set of all the keys in the hashmap,
+     * then stream through a new set, filter in this pattern:
+     * Filter out elements where the input's starttime is after the elements endtime,
+     * Filter out elements where the input's endtime is before the elements starttime,
+     * Then, if the input's starttime is after the elements starttime or the inputs endtime is before the elements endtime,
+     * add it to a collection
+     * If the collection has elements in the end, then there is a conlflict
+     * Otherwise, there is not
+     * @param checkTimeChunk is what we are testing
+     * @return true if the collection is empty, false if it has elements
+     */
     public static Boolean checkTimeConflict(TimeChunk checkTimeChunk) {
         Set<TimeChunk> set = timeBlocks.keySet();
         Set<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
