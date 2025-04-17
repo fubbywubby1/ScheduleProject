@@ -1,5 +1,6 @@
 public class SelfCareScheduler {
-    /*  this handles all of the self care processes.
+    /*  this handles all of the self care processes. takes in stress
+    info from the RateStressPage.
      ideally, when we create the actual schedule,
      we would somehow evaluate the stress level of the user.
      probably by asking them a series of questions about event Labels WORK,
