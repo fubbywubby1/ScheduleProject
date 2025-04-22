@@ -9,7 +9,7 @@ public class StartPage extends Application {
     boolean existingSchedule;
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Start Page");
+        primaryStage.setTitle("Welcome to Your Schedule!");
         Button newScheduleButton = new Button("Create New Schedule");
         newScheduleButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         newScheduleButton.setOnAction(e -> {

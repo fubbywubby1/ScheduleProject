@@ -1,6 +1,15 @@
+import com.apple.eawt.Application;
+
 public class CreateSchedulePage extends Application {
     // stuff go here once we have more functionality done
 
+    public void start(Stage primaryStage)
+    {
+        primaryStage.setTitle("Create a New Schedule");
+        TextField nameTextBox = new TextField("Enter Schedule Name");
+        TextField eventTextBox = new TextField("Enter Event Name");
+        
+    }
     // textboxOne: name of schedule
     // textbox: name of event
     // dropdown: choose day

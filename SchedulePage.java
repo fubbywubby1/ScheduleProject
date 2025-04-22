@@ -1,7 +1,5 @@
 import java.lang.classfile.Label;
 import java.time.LocalDate;
-
-import com.apple.eawt.Application;
 /*
  * SchedulePage.java
  * This class creates a schedule page for a week.
@@ -12,7 +10,7 @@ import com.apple.eawt.Application;
  */
 public class SchedulePage extends Application {
     private static final String[] DAYS = {
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        DaysOfTheWeek.values();
     };
 
     private static final int START_HOUR = 0;
