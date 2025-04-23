@@ -21,5 +21,13 @@ public class SelfCareScheduler {
     6. If not, we need to try again
     7. If so, we need to return the self-care schedule
     8. We need to give the user the option to manually re-generate the self-care schedule.
+
+
+    AVERAGE RATINGS AND THEIR SELF CARE EVENTS
+    0-1: Do a craft (2 hours), Hit the gym (2 hours), Organize your space (1 hour)
+    2-3: Journal (1 hour), Meal with friends (2 hours), Do a craft (2 hours)
+    4-5: Spend time outdoors (1 hour), Read (1 hour), Journal (1 hour), Go for a walk (1 hour)
+    6-7: Watch a show (1 hour), Yoga (1 hour), Journal (1 hour), Go for a walk (1 hour)
+    8-10: Meditate (1 hour), Call a loved one (1 hour), Go for a walk (1 hour), Rest and Reflect (1 hour), Spend time outdoors (1 hour)
     */
 }
