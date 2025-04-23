@@ -7,24 +7,17 @@ import java.util.AbstractMap;
 import java.util.Map.Entry;
 
 interface Optimizer {
-    public static void optimize() {
-        Set<TimeChunk> keys = TimeHandler.timeBlocks.keySet();
-        HashMap<TimeChunk, Integer> chunkPriority = getPrioritys();
-        HashMap<TimeChunk, Entry<LocalTime, LocalTime>> chunkTime = getTimes();
-        HashMap<TimeChunk, Label> chunkLabel = getLabels();
-        /*
-         * Idea:
-         * Stream through the hashmap three different times
-         * each time, map each event to its:
-         * a. label
-         * b. priority
-         * c. time
-         * Then, compare them together through a comparator
-         * Return the best fitting activity
-         */
-
+    public static double optimize() {
+        HashMap<Label, Integer> labelStress = RateStressPage.LabelStress;
+        double stressAVG = labelStress.values()
+                            .stream()
+                            .mapToInt(Integer::intValue)
+                            .average()
+                            .getAsDouble();
+        return stressAVG;
     }
 
+    /*
     private static HashMap<TimeChunk, Integer> getPrioritys() {
         HashMap<TimeChunk, Integer> chunkPriority = new HashMap<>();
         for (TimeChunk key: TimeHandler.timeBlocks.keySet()) {
@@ -49,4 +42,5 @@ interface Optimizer {
         }
         return chunkLabel;
     }
+    */
 }
