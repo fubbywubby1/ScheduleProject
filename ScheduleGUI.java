@@ -24,4 +24,11 @@ public class ScheduleGUI {
         CreateSchedulePage createSchedulePage = new CreateSchedulePage();
         createSchedulePage.start(primaryStage);
     }
+
+    public void startRateStressPage(Stage primaryStage) {
+        RateStressPage rateStressPage = new RateStressPage();
+        rateStressPage.start(primaryStage);
+    }
+
+
 }
