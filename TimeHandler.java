@@ -18,7 +18,7 @@ public class TimeHandler {
         }
     }
 
-    public static Object getTimeBlock(TimeChunk key) {
+    public static TimeChunk getTimeBlock(TimeChunk key) {
         return timeBlocks.get(key);
     }
 
@@ -46,7 +46,7 @@ public class TimeHandler {
      * Filter out elements where the input's endtime is before the elements starttime,
      * Then, if the input's starttime is after the elements starttime or the inputs endtime is before the elements endtime,
      * add it to a collection
-     * If the collection has elements in the end, then there is a conlflict
+     * If the collection has elements in the end, then there is a conflict
      * Otherwise, there is not
      * @param checkTimeChunk is what we are testing
      * @return true if the collection is empty, false if it has elements
