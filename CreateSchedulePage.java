@@ -2,15 +2,19 @@ import com.apple.eawt.Application;
 
 public class CreateSchedulePage extends Application {
     // stuff go here once we have more functionality done
-
+    // should we create the empty schedule at the beginning?
     public void start(Stage primaryStage)
     {
-        public static String scheduleName;
-        public String eventName;
-        public String day;
-        public String startTime;
-        public String endTime;
-        public Label label;
+        private static String scheduleName;
+        private String eventName;
+        private String day;
+        private String startTime;
+        private String endTime;
+        private Label label;
+        private Event event;
+        private LocalTime startTime;
+        private LocalTime endTime;
+        private boolean firstRun = true;
         primaryStage.setTitle("Create a New Schedule");
         TextField nameTextBox = new TextField("Enter Schedule Name");
         TextField eventTextBox = new TextField("Enter Event Name");
@@ -31,12 +35,21 @@ public class CreateSchedulePage extends Application {
         Button addEventButton = new Button("Add Event");
         addEventButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         addEventButton.setOnAction(e -> {
+            // maybe add a for each: for every aspect, if thing is null, spitout error)
             scheduleName = nameTextBox.getText();
             eventName = eventTextBox.getText();
             day = dayComboBox.getValue();
             startTime = hourTextBoxA.getText() + ":" + minuteTextBoxA.getText();
             endTime = hourTextBoxB.getText() + ":" + minuteTextBoxB.getText();
-            String label = labelComboBox.getValue();
+            Label label = labelComboBox.getValue();
+
+            // Create LocalTimes
+            LocalTime startTime = LocalTime.parse(startTime);
+            LocalTime endTime = LocalTime.parse(endTime);
+            // Create a new event object
+            event = new Event(eventName, startTime, endTime, label);
+
+            // Check if the schedule already exists
 
             // WRITE IN: passing it to the hashmap
 
@@ -49,7 +62,10 @@ public class CreateSchedulePage extends Application {
             minuteTextBoxB.clear();
 
             //disable schedule name text box
-            nameTextBox.setDisable(true);
+            firstRun = false;
+            if(!firstRun) {
+                nameTextBox.setDisable(true);
+            }
 
             // Show success message
             label.setText("Event added successfully!");
@@ -70,8 +86,7 @@ public class CreateSchedulePage extends Application {
     // textbox c and d: end time
     // button: add event - on first click, create a new schedule
     // and its hashmap, named the name, and add the event to it.
-    // the textboxOne should disappear, and then the add Event functionality
-    // must remain.
+
     // if it takes in a non time task, input the designated "null" time
     // into the constructor.
 }
