@@ -11,6 +11,8 @@ public class TimeHandler {
             throw new Exception("Invalid Time");
         } else if (value.equals(null)) {
             throw new Exception("Null input");
+        } else if (checkNoTimeConflict(key, timeBlocks)) {
+            throw new Exception("Time Conflict found");
         } else {
             timeBlocks.put(key, value);
         }
@@ -51,7 +53,7 @@ public class TimeHandler {
      * @param checkTimeChunk is what we are testing
      * @return true if the collection is empty, false if it has elements
      */
-    public static Boolean checkTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
+    public static Boolean checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
         Set<TimeChunk> set = timeBlocks.keySet();
         Set<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
                                              .filter(t -> checkTimeChunk.getEndTime().isAfter(t.getStartTime()))
