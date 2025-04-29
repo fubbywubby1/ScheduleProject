@@ -4,12 +4,10 @@ import java.util.Date;
 public class TimeChunk {
     private LocalTime startTime;
     private LocalTime endTime;
-    private Date date;
 
-    public TimeChunk(LocalTime startTime, LocalTime endTime, Date date) {
+    public TimeChunk(LocalTime startTime, LocalTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.date = date;
     }
 
     public LocalTime getStartTime() {
