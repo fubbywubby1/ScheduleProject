@@ -1,27 +1,30 @@
 import java.util.HashMap;
 
 public class Schedule {
-    /*
-     * Should scheduleMap be static because it should only have 7 entries?
-     * If it isn't, how do we ensure that nobody adds more entries?
-     * By being private, nobody else can access it, sure
-     * But if I'm inputting a schedule from a file
-     */
+
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> scheduleMap;
-    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testScheduleMap;
+    private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testScheduleMap;
 
     static {
-        scheduleMap
+        scheduleMap.put(DaysOfTheWeek.Sunday, new HashMap<>());
+        scheduleMap.put(DaysOfTheWeek.Monday, new HashMap<>());
+        scheduleMap.put(DaysOfTheWeek.Tuesday, new HashMap<>());
+        scheduleMap.put(DaysOfTheWeek.Wednesday, new HashMap<>());
+        scheduleMap.put(DaysOfTheWeek.Thursday, new HashMap<>());
+        scheduleMap.put(DaysOfTheWeek.Friday, new HashMap<>());
+        scheduleMap.put(DaysOfTheWeek.Saturday, new HashMap<>());
+        testScheduleMap = scheduleMap;
     }
 
-    public Schedule(HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> scheduleMap) {
-        this.scheduleMap = scheduleMap;
+    public static void refreshTestSchedule() {
+        testScheduleMap = scheduleMap;
     }
 
-    public Schedule(DaysOfTheWeek day, HashMap<TimeChunk, Event> daySchedule) {
-        
+    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> getTestSchedule() {
+        return testScheduleMap;
     }
 
+    /*
     public HashMap<TimeChunk, Event> getDaySchedule(DaysOfTheWeek day) throws Exception {
         if (day != null) {
             return scheduleMap.get(day);
@@ -29,5 +32,8 @@ public class Schedule {
             throw new Exception("Invalid value for inputted day");
         }
     }
+    */
+
+    
     
 }

@@ -1,11 +1,13 @@
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 public class SelfCareScheduler {
-    Double StressAVG = Optimizer.optimize();
     static Map<Predicate<Double>, List<Event>> stressToEvents = new HashMap<>();
+
     static {
         stressToEvents.put(
             StressAVG -> StressAVG >= 0 && StressAVG <= 1,
@@ -42,13 +44,50 @@ public class SelfCareScheduler {
                     new Event("Rest and Reflect", "Just...think about it", Label.SELFCARE, false))
         );
         }
-        public List<Event> recommendActivities() {
+
+        public void scheduleSelfCareActivities() {
+            Double StressAVG = Optimizer.optimize();
+            List<Event> activitiesToTest = recommendActivities(StressAVG);
+            testActivities(activitiesToTest);
+        }
+
+        private List<Event> recommendActivities(double StressAVG) {
             List<Event> recommendedEvents = stressToEvents.entrySet().stream()
-            .filter(entry -> entry.getKey().test(StressAVG))
-            .flatMap(entry -> entry.getValue().stream())
-            .collect(Collectors.toList());
+                                                                     .filter(entry -> entry.getKey().test(StressAVG))
+                                                                     .flatMap(entry -> entry.getValue().stream())
+                                                                     .collect(Collectors.toList());
             return recommendedEvents;
         }
+
+        private boolean testActivities(List<Event> activitiesToTest) {
+            /*
+            to do:
+            Check, for each hour in a day, if we can put the respective event in that hour.
+            Have to create a timeChunk in the meantime to represent that event - thats the issue
+             */            
+            Schedule.refreshTestSchedule();
+            HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule = Schedule.getTestSchedule();
+            for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
+                removeLargestValue(testSchedule);
+            }
+            for (int i = 0; i < activitiesToTest.size(); i++) {
+                for (int j = 0; j < testSchedule.size(); j++) {
+                    for (int k = 8; k < 24; k++) {
+                        if ()
+                    }
+                }
+            }
+        }
+
+        private void removeLargestValue( HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule) {
+            testSchedule.entrySet().removeIf(entry -> entry.getValue().size() ==
+                                                                      testSchedule.values().stream()
+                                                                     .mapToInt(HashMap::size)
+                                                                     .max()
+                                                                     .getAsInt());
+        }
+
+
     }
     /*  this handles all of the self care processes. takes in stress
     info from the RateStressPage.

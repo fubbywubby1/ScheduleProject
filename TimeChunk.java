@@ -1,5 +1,4 @@
 import java.time.LocalTime;
-import java.util.Date;
 
 public class TimeChunk {
     private LocalTime startTime;
@@ -16,10 +15,6 @@ public class TimeChunk {
 
     public LocalTime getEndTime() {
         return endTime;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     public void setStartTime(LocalTime startTime) throws Exception{

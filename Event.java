@@ -1,14 +1,12 @@
 class Event implements TimeBlockable {
     private String name;
     private String description;
-    private int priority;
     private Label label;
     private Boolean isTask;
 
-    public Event(String name, String description, int priority, Label label, Boolean isTask) {
+    public Event(String name, String description, Label label, Boolean isTask) {
         this.name = name;
         this.description = description;
-        this.priority = priority;
         this.label = label;
         this.isTask = isTask;
     }
@@ -21,11 +19,7 @@ class Event implements TimeBlockable {
         return description;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public Label getLable() {
+    public Label getLabel() {
         return label;
     }
 
@@ -42,12 +36,6 @@ class Event implements TimeBlockable {
     public void setDescription(String description) {
         if (description != null) {
             this.description = description;
-        }
-    }
-
-    public void setPriority(int priority) {
-        if (priority > 0 && priority < 101) {
-            this.priority = priority;
         }
     }
 
