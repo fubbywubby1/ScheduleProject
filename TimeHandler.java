@@ -3,11 +3,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.LocalTime;
 public class TimeHandler {
-    public static HashMap<TimeChunk, Event> timeBlocks = new HashMap<>();
-
     //To Do:
     //Make sure there's not time conflicts when adding a timeBlock
-    public static void addToTimeBlock(TimeChunk key, Event value) throws Exception {
+    public static void addToTimeBlock(TimeChunk key, Event value, HashMap<TimeChunk, Event> timeBlocks) throws Exception {
         if ((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
             && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN))  {
             throw new Exception("Invalid Time");
@@ -18,15 +16,17 @@ public class TimeHandler {
         }
     }
 
-    public static TimeChunk getTimeBlock(TimeChunk key) {
+    /**
+    public static Event getEvent(TimeChunk key, HashMap<TimeChunk, Event> timeBlocks) {
         return timeBlocks.get(key);
     }
 
     public static void removeTimeBlock(TimeChunk key) {
         timeBlocks.remove(key);
     }
+    */
 
-    public static void removeTimeBlockByEvent(Event value) throws Exception {
+    public static void removeTimeBlockByEvent(Event value, HashMap<TimeChunk, Event> timeBlocks) throws Exception {
         if (value.equals(null)) {
             throw new Exception("Null input");
         } else {
@@ -51,7 +51,7 @@ public class TimeHandler {
      * @param checkTimeChunk is what we are testing
      * @return true if the collection is empty, false if it has elements
      */
-    public static Boolean checkTimeConflict(TimeChunk checkTimeChunk) {
+    public static Boolean checkTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
         Set<TimeChunk> set = timeBlocks.keySet();
         Set<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
                                              .filter(t -> checkTimeChunk.getEndTime().isAfter(t.getStartTime()))
