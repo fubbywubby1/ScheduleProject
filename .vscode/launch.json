@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ScheduleGUI",
+            "request": "launch",
+            "mainClass": "ScheduleGUI",
+            "projectName": "ScheduleProject_e95cfc01"
+        },
+        {
+            "type": "java",
             "name": "StartPage",
             "request": "launch",
             "mainClass": "StartPage",
