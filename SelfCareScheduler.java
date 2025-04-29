@@ -1,4 +1,55 @@
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 public class SelfCareScheduler {
+    Double StressAVG = Optimizer.optimize();
+    static Map<Predicate<Double>, List<Event>> stressToEvents = new HashMap<>();
+    static {
+        stressToEvents.put(
+            StressAVG -> StressAVG >= 0 && StressAVG <= 1,
+            List.of(new Event("Do a Craft", "Create something new!", Label.LEISURE, false), 
+                    new Event("Hit the gym", "It's leg day!", Label.SELFCARE, false),
+                    new Event("Organize your space", "...your room is quite messy", Label.SELFCARE, false))
+        );
+        stressToEvents.put(
+            StressAVG -> StressAVG >= 2 && StressAVG <= 3,
+            List.of(new Event("Journal", "Write your feelings down", Label.SELFCARE, false), 
+                    new Event("Meal with friends", "It's always a good time to hangout.", Label.LEISURE, false),
+                    new Event("Do a Craft", "Create something new!", Label.LEISURE, false))
+        );
+        stressToEvents.put(
+            StressAVG -> StressAVG >= 4 && StressAVG <= 5,
+            List.of(new Event("Spend time outdoors", "It's beautiful outside!", Label.SELFCARE, false), 
+                    new Event("Read", "As long as its not Shakespeare.", Label.LEISURE, false),
+                    new Event("Journal", "Write your feelings down", Label.SELFCARE, false),
+                    new Event("Go for a walk", "Take your dog too.", Label.SELFCARE, false))
+        );
+        stressToEvents.put(
+            StressAVG -> StressAVG >= 6 && StressAVG <= 7,
+            List.of(new Event("Watch a show", "...maybe binge watch an entire series", Label.LEISURE, false), 
+                    new Event("Yoga", "It helps with your back pain.", Label.SELFCARE, false),
+                    new Event("Journal", "Write your feelings down", Label.SELFCARE, false),
+                    new Event("Go for a walk", "Take your dog too.", Label.SELFCARE, false))
+        );
+        stressToEvents.put(
+            StressAVG -> StressAVG >= 8 && StressAVG <= 10,
+            List.of(new Event("Spend time outdoors", "It's beautiful outside!", Label.SELFCARE, false), 
+                    new Event("Meditate", "Sometimes you just have to breathe.", Label.SELFCARE, false),
+                    new Event("Call a Loved One", "...maybe Aunt Jude isn't so evil after all", Label.SELFCARE, false),
+                    new Event("Go for a walk", "Take your dog too.", Label.SELFCARE, false),
+                    new Event("Rest and Reflect", "Just...think about it", Label.SELFCARE, false))
+        );
+        }
+        public List<Event> recommendActivities() {
+            List<Event> recommendedEvents = stressToEvents.entrySet().stream()
+            .filter(entry -> entry.getKey().test(StressAVG))
+            .flatMap(entry -> entry.getValue().stream())
+            .collect(Collectors.toList());
+            return recommendedEvents;
+        }
+    }
     /*  this handles all of the self care processes. takes in stress
     info from the RateStressPage.
      ideally, when we create the actual schedule,
@@ -30,4 +81,3 @@ public class SelfCareScheduler {
     6-7: Watch a show (1 hour), Yoga (1 hour), Journal (1 hour), Go for a walk (1 hour)
     8-10: Meditate (1 hour), Call a loved one (1 hour), Go for a walk (1 hour), Rest and Reflect (1 hour), Spend time outdoors (1 hour)
     */
-}
