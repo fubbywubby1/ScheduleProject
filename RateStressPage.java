@@ -73,13 +73,8 @@ public void start(Stage primaryStage) {
         stressLevels.add(choresStress);
         stressLevels.add(personalStress);
 
-        // average all stress levels together
-        int totalStress = 0;
-        for (int i = 0; i < stressLevels.size(); i++) {
-            totalStress += stressLevels.get(i);
-        }
-
-        averageStress = totalStress / stressLevels.size();
+        // calculate the average stress level using the Optimizer interfact
+        
 
         // close the window
         primaryStage.close();
