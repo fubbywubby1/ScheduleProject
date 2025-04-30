@@ -76,12 +76,14 @@ public class CreateSchedulePage extends Application {
             // Create LocalTimes
             LocalTime startTime = LocalTime.parse(startTime);
             LocalTime endTime = LocalTime.parse(endTime);
+
+            TimeChunk eventChunk = new TimeChunk(startTime, endTime);
             // Create a new event object
-            event = new Event(eventName, startTime, endTime, label);
+            event = new Event(eventName, eventDescription, label, false);
 
             // passing it to the hashmap, and if it fails, catch the exception and print it
             try {
-                TimeHandler.addToTimeBlock(new TimeChunk(startTime, EndTime), event, Schedule.scheduleMap.get(day));
+                TimeHandler.addToTimeBlock(eventChunk, event, Schedule.scheduleMap.get(day));
             } catch (UnableToScheduleException e) {
                 errorTextArea(e.toString());
             }
