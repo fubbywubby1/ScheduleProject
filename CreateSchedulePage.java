@@ -52,6 +52,7 @@ public class CreateSchedulePage extends Application {
             // Check if the schedule already exists
 
             // WRITE IN: passing it to the hashmap
+            TimeHandler.addToTimeBlock(new TimeChunk(startTime, EndTime), event, Schedule.scheduleMap.get(day));
 
             // Clear the text fields
             nameTextBox.clear();
