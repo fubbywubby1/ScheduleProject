@@ -63,7 +63,7 @@ public class SelfCareScheduler {
             return recommendedEvents;
         }
 
-        private List<Event> testActivities(List<Event> activitiesToTest) {          
+        private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException{          
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule = Schedule.getTestSchedule();
             for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
                 removeLargestValue(testSchedule);
@@ -73,7 +73,11 @@ public class SelfCareScheduler {
                     for (int k = 8; k < 22; k++) {
                         TimeChunk testChunk = new TimeChunk(LocalTime.of(k, 0), LocalTime.of(k + 1, 0));
                         if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key)).isEmpty()) {
+                            try {
                             TimeHandler.addToTimeBlock(testChunk, testEvent, testSchedule.get(key));
+                            } catch (UnableToScheduleException e) {
+                                break;
+                            }
                             activitiesToTest.remove(testEvent);
                             break;
                         }
