@@ -1,8 +1,7 @@
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 public class SelfCareScheduler {
@@ -45,10 +44,13 @@ public class SelfCareScheduler {
         );
         }
 
-        public void scheduleSelfCareActivities() {
-            Double StressAVG = Optimizer.optimize();
+        public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) {
+            double StressAVG = optimize(labelStress);
             List<Event> activitiesToTest = recommendActivities(StressAVG);
-            testActivities(activitiesToTest);
+            activitiesToTest = testActivities(activitiesToTest);
+            if (activitiesToTest.isEmpty()) {
+                System.out.println("Every event was able to be placed in");
+            }
         }
 
         private List<Event> recommendActivities(double StressAVG) {
@@ -59,7 +61,7 @@ public class SelfCareScheduler {
             return recommendedEvents;
         }
 
-        private boolean testActivities(List<Event> activitiesToTest) {
+        private List<Event> testActivities(List<Event> activitiesToTest) {
             /*
             to do:
             Check, for each hour in a day, if we can put the respective event in that hour.
@@ -70,21 +72,38 @@ public class SelfCareScheduler {
             for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
                 removeLargestValue(testSchedule);
             }
-            for (int i = 0; i < activitiesToTest.size(); i++) {
-                for (int j = 0; j < testSchedule.size(); j++) {
-                    for (int k = 8; k < 24; k++) {
-                        if ()
+            for (Event testEvent: activitiesToTest) {
+                for (DaysOfTheWeek key: testSchedule.keySet()) {
+                    for (int k = 8; k < 22; k++) {
+                        TimeChunk testChunk = new TimeChunk(LocalTime.of(k, 0), LocalTime.of(k + 1, 0));
+                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key))) {
+                            testSchedule.get(key).put(testChunk, testEvent);
+                            activitiesToTest.remove(testEvent);
+                            break;
+                        }
                     }
+                    break;
                 }
+                break;
             }
+            return activitiesToTest;
         }
 
-        private void removeLargestValue( HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule) {
+        private void removeLargestValue(HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule) {
             testSchedule.entrySet().removeIf(entry -> entry.getValue().size() ==
                                                                       testSchedule.values().stream()
                                                                      .mapToInt(HashMap::size)
                                                                      .max()
                                                                      .getAsInt());
+        }
+
+        public double optimize(HashMap<Label, Integer> labelStress) {;
+            double stressAVG = labelStress.values()
+                                .stream()
+                                .mapToInt(Integer::intValue)
+                                .average()
+                                .getAsDouble();
+            return stressAVG;
         }
 
 
