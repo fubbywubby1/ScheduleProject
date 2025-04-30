@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class CreateSchedulePage extends Application {
     // stuff go here once we have more functionality done
     // should we create the empty schedule at the beginning?
+    @Override
     public void start(Stage primaryStage)
     {
         String scheduleName;
@@ -23,6 +24,11 @@ public class CreateSchedulePage extends Application {
         String day;
         String startTime;
         String endTime;
+
+        final String[] LABELS = Arrays.stream(Label.values())
+                                               .map(Enum::name)
+                                               .toArray(String[]::new);
+
         String label;
         Event event;
         boolean firstRun = true;
@@ -80,7 +86,7 @@ public class CreateSchedulePage extends Application {
             Label enumLabel = new Label();
             for (Label l : Label.values())
             {
-            if (label.equals(value))
+            if (label.equals(// what do i even put here))
             {
                 enumLabel = l;
                 break;

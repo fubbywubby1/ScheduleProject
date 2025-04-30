@@ -1,10 +1,14 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 /*
  * SchedulePage.java
@@ -15,9 +19,9 @@ import java.util.HashMap;
  * @author Emily Schwartz
  */
 public class SchedulePage extends Application {
-    private static final String[] DAYS = {
-        DaysOfTheWeek.values();
-    };
+    private static final String[] DAYS = Arrays.stream(DaysOfTheWeek.values())
+                                               .map(Enum::name)
+                                               .toArray(String[]::new);
 
     private static final int START_HOUR = 0;
     private static final int END_HOUR = 24;
