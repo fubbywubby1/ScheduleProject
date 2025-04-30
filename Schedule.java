@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class Schedule {
 
-    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> scheduleMap;
+    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>>();
     private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testScheduleMap;
     private static String name = "name";;
 
