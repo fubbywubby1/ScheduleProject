@@ -1,7 +1,0 @@
-// enums to define frequency of reoccurrance 
-public enum FrequencyType {
-    DAILY,
-    WEEKLY,
-    MONTHLY,
-    YEARLY
-}

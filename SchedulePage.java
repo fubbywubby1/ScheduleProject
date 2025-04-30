@@ -22,7 +22,7 @@ public class SchedulePage extends Application {
      */
     public void start(Stage primaryStage, LocalDate date)
     {
-        primaryStage.setTitle("Your Schedule for Week" + date);
+        primaryStage.setTitle("Your Schedule");
         GridPane calendarGrid = new GridPane();
         calendarGrid.setGridLinesVisible(true);
         calendarGrid.setPadding(new Insets(10));
