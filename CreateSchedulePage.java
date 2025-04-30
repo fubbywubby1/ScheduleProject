@@ -15,16 +15,15 @@ public class CreateSchedulePage extends Application {
     // should we create the empty schedule at the beginning?
     public void start(Stage primaryStage)
     {
-        private static String scheduleName;
-        private String eventName;
-        private String day;
-        private String startTime;
-        private String endTime;
-        private Label label;
-        private Event event;
-        private LocalTime startTime;
-        private LocalTime endTime;
-        private boolean firstRun = true;
+        String scheduleName;
+        String eventName;
+        String day;
+        String startTime;
+        String endTime;
+        Label label;
+        Event event;
+        boolean firstRun = true;
+
         primaryStage.setTitle("Create a New Schedule");
         TextField nameTextBox = new TextField("Enter Schedule Name");
         TextField eventTextBox = new TextField("Enter Event Name");
@@ -45,8 +44,21 @@ public class CreateSchedulePage extends Application {
         Button addEventButton = new Button("Add Event");
         addEventButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         addEventButton.setOnAction(e -> {
+            if (firstRun) {
+                // Check if the schedule name is empty
+                if (nameTextBox.getText().isEmpty()) {
+                    scheduleName = "Default Schedule";
+                    return;
+                }
+                scheduleName = nameTextBox.getText();
+                // create a new schedule object with this name
+                Schedule schedule = new Schedule(scheduleName);
+                firstRun = false;
+                nameTextBox.setDisable(true);
+            }
             // maybe add a for each: for every aspect, if thing is null, spitout error)
-            scheduleName = nameTextBox.getText();
+            
+
             eventName = eventTextBox.getText();
             day = dayComboBox.getValue();
             startTime = hourTextBoxA.getText() + ":" + minuteTextBoxA.getText();
@@ -70,12 +82,6 @@ public class CreateSchedulePage extends Application {
             minuteTextBoxA.clear();
             hourTextBoxB.clear();
             minuteTextBoxB.clear();
-
-            //disable schedule name text box
-            firstRun = false;
-            if(!firstRun) {
-                nameTextBox.setDisable(true);
-            }
             
         });
 
@@ -85,16 +91,4 @@ public class CreateSchedulePage extends Application {
             ScheduleGUI.startRateStressPage(primaryStage);
         });
     }
-    // textboxOne: name of schedule
-    // textbox: name of event
-    // dropdown: choose day
-    // dropdown: choose label
-    // radio buttons: Task? Timed Tasks?
-    // textbox a and b: start time
-    // textbox c and d: end time
-    // button: add event - on first click, create a new schedule
-    // and its hashmap, named the name, and add the event to it.
-
-    // if it takes in a non time task, input the designated "null" time
-    // into the constructor.
 }
