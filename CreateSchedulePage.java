@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -29,7 +30,10 @@ public class CreateSchedulePage extends Application {
         TextField eventTextBox = new TextField("Enter Event Name");
         
         ComboBox<String> dayComboBox = new ComboBox<>();
-        dayComboBox.getItems().addAll(DaysOfTheWeek.values());
+        // for each DaysOfTheWeek enum, cast as a string and put it into an array
+        for (DaysOfTheWeek d : DaysOfTheWeek.values()) {
+            dayComboBox.getItems().add(day.toString());
+        }
         dayComboBox.setPromptText("Choose Day");
 
         TextField hourTextBoxA = new TextField(" (24 hour format) Enter Start Hour");
@@ -40,6 +44,9 @@ public class CreateSchedulePage extends Application {
         ComboBox<String> labelComboBox = new ComboBox<>();
         labelComboBox.getItems().addAll(Label.values());
         labelComboBox.setPromptText("Choose Label");
+
+        // Text area to output error messages
+        TextArea errorTextArea = new TextArea();
 
         Button addEventButton = new Button("Add Event");
         addEventButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
@@ -70,11 +77,11 @@ public class CreateSchedulePage extends Application {
             // Create a new event object
             event = new Event(eventName, startTime, endTime, label);
 
-            // WRITE IN: passing it to the hashmap
+            // passing it to the hashmap, and if it fails, catch the exception and print it
             try {
                 TimeHandler.addToTimeBlock(new TimeChunk(startTime, EndTime), event, Schedule.scheduleMap.get(day));
             } catch (UnableToScheduleException e) {
-                e.toString();
+                errorTextArea(e.toString());
             }
 
             // Clear the text fields

@@ -12,22 +12,22 @@ public class ScheduleGUI {
         startPage.start(new Stage());
     }
 
-    public void startSchedulePage(Stage primaryStage) {
+    public static void startSchedulePage(Stage primaryStage) {
         SchedulePage schedulePage = new SchedulePage();
         schedulePage.start(primaryStage);
     }
 
-    public void startFindExistingSchedulePage(Stage primaryStage) {
+    public static void startFindExistingSchedulePage(Stage primaryStage) {
         FindExistingSchedulePage findExistingSchedulePage = new FindExistingSchedulePage();
         findExistingSchedulePage.start(primaryStage);
     }
 
-    public void startCreateSchedulePage(Stage primaryStage) {
+    public static void startCreateSchedulePage(Stage primaryStage) {
         CreateSchedulePage createSchedulePage = new CreateSchedulePage();
         createSchedulePage.start(primaryStage);
     }
 
-    public void startRateStressPage(Stage primaryStage) {
+    public static void startRateStressPage(Stage primaryStage) {
         RateStressPage rateStressPage = new RateStressPage();
         rateStressPage.start(primaryStage);
     }

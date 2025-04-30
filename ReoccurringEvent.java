@@ -9,5 +9,10 @@ public class ReoccurringEvent extends Event implements Reoccurring {
         super(name, description, label, isTask); // calls the parent class (event)
         this.recurringDays = new HashSet<>(recurringDays); // hashset to avoid duplicates?  
     }
-   
+
+    @Override
+    public Set<DaysOfTheWeek> getRecurringDays() {
+        return new HashSet<>(recurringDays); // return a copy
+    }
+    
 }
