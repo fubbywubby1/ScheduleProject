@@ -1,4 +1,5 @@
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,9 @@ public class SelfCareScheduler {
             if (activitiesToTest.isEmpty()) {
                 System.out.println("Every event was able to be placed in");
             } else {
-                throw new UnableToScheduleException(activitiesToTest);
+                List<TimeBlockable> activitiesToBlocks = new ArrayList<>();
+                activitiesToTest.forEach(a -> activitiesToBlocks.add(a));
+                throw new UnableToScheduleException(activitiesToBlocks);
             }
         }
 
@@ -64,7 +67,7 @@ public class SelfCareScheduler {
         }
 
         private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException{          
-            HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule = Schedule.getTestSchedule();
+            HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule = Schedule.getTestSchedule();
             for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
                 removeLargestValue(testSchedule);
             }
@@ -89,7 +92,7 @@ public class SelfCareScheduler {
             return activitiesToTest;
         }
 
-        private void removeLargestValue(HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule) {
+        private void removeLargestValue(HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule) {
             testSchedule.entrySet().removeIf(entry -> entry.getValue().size() ==
                                                                       testSchedule.values().stream()
                                                                      .mapToInt(HashMap::size)

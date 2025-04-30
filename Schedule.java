@@ -2,8 +2,8 @@ import java.util.HashMap;
 
 public class Schedule {
 
-    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>>();
-    private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testScheduleMap;
+    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>();
+    private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testScheduleMap;
     private static String name = "name";;
 
     static {
@@ -21,7 +21,7 @@ public class Schedule {
         testScheduleMap = scheduleMap;
     }
 
-    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> getTestSchedule() {
+    public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> getTestSchedule() {
         Schedule.refreshTestSchedule();
         return testScheduleMap;
     }

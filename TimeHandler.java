@@ -11,7 +11,7 @@ public class TimeHandler {
      * @param timeBlocks
      * @throws UnableToScheduleException
      */
-    public static void addToTimeBlock(TimeChunk key, Event value, HashMap<TimeChunk, Event> timeBlocks) throws UnableToScheduleException {
+    public static void addToTimeBlock(TimeChunk key, TimeBlockable value, HashMap<TimeChunk, TimeBlockable> timeBlocks) throws UnableToScheduleException {
         if ((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
             && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN))  {
             throw new UnableToScheduleException(value, key);
@@ -55,7 +55,7 @@ public class TimeHandler {
      * @param checkTimeChunk is what we are testing
      * @return the List of elements to check
      */
-    public static List<TimeChunk> checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
+    public static List<TimeChunk> checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, TimeBlockable> timeBlocks) {
         Set<TimeChunk> set = timeBlocks.keySet();
         List<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
                                              .filter(t -> checkTimeChunk.getEndTime().isAfter(t.getStartTime()))

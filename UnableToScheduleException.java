@@ -2,64 +2,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UnableToScheduleException extends Exception {
-    private List<Event> invalidEvents;
-    private int numOfInvalidEvents;
+    private List<TimeBlockable> invalidBlocks;
+    private int numOfInvalidBlocks;
 
     private TimeChunk invalidTimeChunk;
 
     private List<TimeChunk> conflictingChunks;
 
-    public UnableToScheduleException(List<Event> invalidEvents) {
-        this.invalidEvents = invalidEvents;
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(List<TimeBlockable> invalidBlocks) {
+        this.invalidBlocks = invalidBlocks;
+        this.numOfInvalidBlocks = invalidBlocks.size();
     }
 
-    public UnableToScheduleException(Event invalidEvent) {
-        this.invalidEvents = new ArrayList<>();
-        invalidEvents.add(invalidEvent);
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(TimeBlockable invalidBlock) {
+        this.invalidBlocks = new ArrayList<>();
+        invalidBlocks.add(invalidBlock);
+        this.numOfInvalidBlocks = invalidBlocks.size();
     }
 
-    public UnableToScheduleException(List<Event> invalidEvents, TimeChunk invalidTimeChunk) {
-        this.invalidEvents = invalidEvents;
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(List<TimeBlockable> invalidBlocks, TimeChunk invalidTimeChunk) {
+        this.invalidBlocks = invalidBlocks;
+        this.numOfInvalidBlocks = invalidBlocks.size();
         this.invalidTimeChunk = invalidTimeChunk;
     }
 
-    public UnableToScheduleException(Event invalidEvent, TimeChunk invalidTimeChunk) {
-        this.invalidEvents = new ArrayList<>();
-        invalidEvents.add(invalidEvent);
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(TimeBlockable invalidBlock, TimeChunk invalidTimeChunk) {
+        this.invalidBlocks = new ArrayList<>();
+        invalidBlocks.add(invalidBlock);
+        this.numOfInvalidBlocks = invalidBlocks.size();
         this.invalidTimeChunk = invalidTimeChunk;
     }
 
-    public UnableToScheduleException(List<Event> invalidEvents, List<TimeChunk> conflictingChunks) {
-        this.invalidEvents = invalidEvents;
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(List<TimeBlockable> invalidBlocks, List<TimeChunk> conflictingChunks) {
+        this.invalidBlocks = invalidBlocks;
+        this.numOfInvalidBlocks = invalidBlocks.size();
         this.conflictingChunks = conflictingChunks;
     }
 
-    public UnableToScheduleException(Event invalidEvent, List<TimeChunk> conflictingChunks) {
-        this.invalidEvents = new ArrayList<>();
-        invalidEvents.add(invalidEvent);
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(TimeBlockable invalidBlock, List<TimeChunk> conflictingChunks) {
+        this.invalidBlocks = new ArrayList<>();
+        invalidBlocks.add(invalidBlock);
+        this.numOfInvalidBlocks = invalidBlocks.size();
         this.conflictingChunks = conflictingChunks;
     }
 
-    public UnableToScheduleException(Event invalidEvent, TimeChunk invalidChunk, List<TimeChunk> conflictingChunks) {
-        this.invalidEvents = new ArrayList<>();
-        invalidEvents.add(invalidEvent);
-        this.numOfInvalidEvents = invalidEvents.size();
+    public UnableToScheduleException(TimeBlockable invalidBlock, TimeChunk invalidChunk, List<TimeChunk> conflictingChunks) {
+        this.invalidBlocks = new ArrayList<>();
+        invalidBlocks.add(invalidBlock);
+        this.numOfInvalidBlocks = invalidBlocks.size();
         this.conflictingChunks = conflictingChunks;
         this.invalidTimeChunk = invalidChunk;
     }
 
-    public List<Event> getInvalidEvents() {
-        return invalidEvents;
+    public List<TimeBlockable> getInvalidBlocks() {
+        return invalidBlocks;
     }
 
-    public int getNumOfInvalidEvents() {
-        return numOfInvalidEvents;
+    public int getNumOfInvalidBlocks() {
+        return numOfInvalidBlocks;
     }
 
     public TimeChunk getInvalidTimeChunk() {
@@ -71,7 +71,7 @@ public class UnableToScheduleException extends Exception {
     }
 
     public String toString() {
-        return "Invalid Event(s): " + invalidEvents.toString() + "\n" +
+        return "Invalid Event(s): " + invalidBlocks.toString() + "\n" +
                "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n" +
                "Conflicts With: " + conflictingChunks.get(0).getStartTime() + " to " + conflictingChunks.get(0).getEndTime() + " and " +
                 conflictingChunks.get(1).getStartTime() + " to " + conflictingChunks.get(1).getEndTime();
