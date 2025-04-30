@@ -73,7 +73,6 @@ public class CreateSchedulePage extends Application {
 
             // WRITE IN: passing it to the hashmap
             TimeHandler.addToTimeBlock(new TimeChunk(startTime, EndTime), event, Schedule.scheduleMap.get(day));
-            label.setText("Event added successfully!");
 
             // Clear the text fields
             nameTextBox.clear();

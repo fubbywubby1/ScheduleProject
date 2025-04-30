@@ -69,4 +69,11 @@ public class UnableToScheduleException extends Exception {
     public List<TimeChunk> getConflictingChunks() {
         return conflictingChunks;
     }
+
+    public String toString() {
+        return "Invalid Event(s): " + invalidEvents.toString() + "\n" +
+               "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n" +
+               "Conflicts With: " + conflictingChunks.get(0).getStartTime() + " to " + conflictingChunks.get(0).getEndTime() + " and " +
+                conflictingChunks.get(1).getStartTime() + " to " + conflictingChunks.get(1).getEndTime();
+    }
 }
