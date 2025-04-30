@@ -44,12 +44,14 @@ public class SelfCareScheduler {
         );
         }
 
-        public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) {
+        public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) throws UnableToScheduleException {
             double StressAVG = optimize(labelStress);
             List<Event> activitiesToTest = recommendActivities(StressAVG);
             activitiesToTest = testActivities(activitiesToTest);
             if (activitiesToTest.isEmpty()) {
                 System.out.println("Every event was able to be placed in");
+            } else {
+                throw new UnableToScheduleException(activitiesToTest);
             }
         }
 
@@ -61,13 +63,7 @@ public class SelfCareScheduler {
             return recommendedEvents;
         }
 
-        private List<Event> testActivities(List<Event> activitiesToTest) {
-            /*
-            to do:
-            Check, for each hour in a day, if we can put the respective event in that hour.
-            Have to create a timeChunk in the meantime to represent that event - thats the issue
-             */            
-            Schedule.refreshTestSchedule();
+        private List<Event> testActivities(List<Event> activitiesToTest) {          
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule = Schedule.getTestSchedule();
             for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
                 removeLargestValue(testSchedule);
@@ -76,8 +72,8 @@ public class SelfCareScheduler {
                 for (DaysOfTheWeek key: testSchedule.keySet()) {
                     for (int k = 8; k < 22; k++) {
                         TimeChunk testChunk = new TimeChunk(LocalTime.of(k, 0), LocalTime.of(k + 1, 0));
-                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key))) {
-                            testSchedule.get(key).put(testChunk, testEvent);
+                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key)).isEmpty()) {
+                            TimeHandler.addToTimeBlock(testChunk, testEvent, testSchedule.get(key));
                             activitiesToTest.remove(testEvent);
                             break;
                         }
@@ -108,34 +104,3 @@ public class SelfCareScheduler {
 
 
     }
-    /*  this handles all of the self care processes. takes in stress
-    info from the RateStressPage.
-     ideally, when we create the actual schedule,
-     we would somehow evaluate the stress level of the user.
-     probably by asking them a series of questions about event Labels WORK,
-     SCHOOL, STUDY, CLUB, CHORES - how would you rate your stress level on a
-     scale of 1-10? You take that average and then use that to determine
-     how many self care activities you need to schedule. It creates a random schedule full
-     of self-care activities, and compares that to the user's schedule. Those that overlap 
-     are removed from the self-care schedule. If the amount of self-care activites is not reached,
-     it tries again, and again, until that number is reached and nothing is overlapping.
-     The user, when seeing their new schedule, should have the option to delete self-care tasks 
-     (as they would be able to delete any other Events if they so choose) and also an
-     option to re-generate the self-care schedule
-    1. We need to create a list of self care activities
-    2. We need to create a random schedule of self-care activities
-    3. We need to compare the self-care schedule to the user's schedule
-    4. We need to remove any overlapping self-care activities
-    5. We need to check if the number of self-care activities is reached
-    6. If not, we need to try again
-    7. If so, we need to return the self-care schedule
-    8. We need to give the user the option to manually re-generate the self-care schedule.
-
-
-    AVERAGE RATINGS AND THEIR SELF CARE EVENTS
-    0-1: Do a craft (2 hours), Hit the gym (2 hours), Organize your space (1 hour)
-    2-3: Journal (1 hour), Meal with friends (2 hours), Do a craft (2 hours)
-    4-5: Spend time outdoors (1 hour), Read (1 hour), Journal (1 hour), Go for a walk (1 hour)
-    6-7: Watch a show (1 hour), Yoga (1 hour), Journal (1 hour), Go for a walk (1 hour)
-    8-10: Meditate (1 hour), Call a loved one (1 hour), Go for a walk (1 hour), Rest and Reflect (1 hour), Spend time outdoors (1 hour)
-    */
