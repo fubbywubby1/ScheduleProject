@@ -77,8 +77,8 @@ public class SchedulePage extends Application {
                 for (int hour = startHour; hour < endHour; hour++) {
                     StackPane cell = (StackPane) calendarGrid.getChildren().get((hour - START_HOUR + 1) * DAYS.length + dayIndex);
                     // color the event block based on the color given in its labe
-                    if (event.getLabel() != null) {
-                        cell.setStyle("-fx-background-color: " + event.getLabel().getColor() + ";");
+                    if (TimeBlock.getLabel() != null) {
+                        cell.setStyle("-fx-background-color: " + TimeBlock.getLabel().getColor() + ";");
                     } else {
                         cell.setStyle("-fx-background-color: rgb(156, 162, 157);");
                     
