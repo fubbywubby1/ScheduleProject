@@ -32,7 +32,7 @@ public class CreateSchedulePage extends Application {
         dayComboBox.getItems().addAll(DaysOfTheWeek.values());
         dayComboBox.setPromptText("Choose Day");
 
-        TextField hourTextBoxA = new TextField("Enter Start Hour");
+        TextField hourTextBoxA = new TextField(" (24 hour format) Enter Start Hour");
         TextField minuteTextBoxA = new TextField("Enter Start Minute");
         TextField hourTextBoxB = new TextField("Enter End Hour");
         TextField minuteTextBoxB = new TextField("Enter End Minute");
