@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -29,7 +30,10 @@ public class CreateSchedulePage extends Application {
         TextField eventTextBox = new TextField("Enter Event Name");
         
         ComboBox<String> dayComboBox = new ComboBox<>();
-        dayComboBox.getItems().addAll(DaysOfTheWeek.values());
+        // for each DaysOfTheWeek enum, cast as a string and put it into an array
+        for (DaysOfTheWeek d : DaysOfTheWeek.values()) {
+            dayComboBox.getItems().add(day.toString());
+        }
         dayComboBox.setPromptText("Choose Day");
 
         TextField hourTextBoxA = new TextField(" (24 hour format) Enter Start Hour");
