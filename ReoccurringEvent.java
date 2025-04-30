@@ -1,20 +1,13 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class ReoccurringEvent extends Event implements Reoccurring {
-    private FrequencyType frequencyType;
 
-    // other stuff tba
+    private Set<DaysOfTheWeek> recurringDays; // stores the days this event repeats
 
-    // constructor
-    public ReoccurringEvent() {
-        this.frequencyType = FrequencyType.DAILY; // default value?
+    public ReoccurringEvent (String name, String description, Label label, Boolean isTask, Set<DaysOfTheWeek> recurringDays) {
+        super(name, description, label, isTask); // calls the parent class (event)
+        this.recurringDays = new HashSet<>(recurringDays); // hashset to avoid duplicates?  
     }
-    // getter for frequency type
-    @Override
-    public FrequencyType getFrequencyType() {
-       return this.frequencyType;
-    }
-
-    // setter for frequency type
-    public void setFrequencyType(FrequencyType frequencyType) {
-        this.frequencyType = frequencyType;
-    }
+   
 }
