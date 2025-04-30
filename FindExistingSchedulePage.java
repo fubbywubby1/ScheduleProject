@@ -4,6 +4,14 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * This is the FindExistingSchedulePage class.
+ * It generates the GUI for the user to choose an existing schedule.
+ * When the user selects a schedule, it will pass the user to the SchedulePage.
+ * If the user does not see their desired schedule, they can create a new one.
+ * 
+ * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
+ */
 public class FindExistingSchedulePage extends Application {
     @Override
     public void start(Stage primaryStage) {

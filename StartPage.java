@@ -14,6 +14,11 @@ import javafx.stage.Stage;
 public class StartPage extends Application {
     boolean existingSchedule;
     @Override
+    /**
+     * This method creates the start page for the application.
+     * It contains two buttons: one to create a new schedule and one to load an existing schedule.
+     * @param primaryStage
+     */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Welcome to Your Schedule!");
         Button newScheduleButton = new Button("Create New Schedule");
