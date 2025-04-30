@@ -8,7 +8,7 @@ import javafx.stage.Stage;
  * StartPage.java
  * This creates the start page for the application, which
  * will then lead to either an existing schedule or the necessary screens to build a new schedule.
- * @WIP
+ * 
  * @author Emily Schwartz
  */
 public class StartPage extends Application {

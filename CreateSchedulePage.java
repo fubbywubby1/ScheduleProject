@@ -25,7 +25,7 @@ public class CreateSchedulePage extends Application {
         String startTime;
         String endTime;
 
-        final String[] LABELS = Arrays.stream(Label.values())
+        private static final String[] LABELS = Arrays.stream(Label.values())
                                                .map(Enum::name)
                                                .toArray(String[]::new);
 
