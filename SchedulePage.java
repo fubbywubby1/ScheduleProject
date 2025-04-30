@@ -4,7 +4,7 @@ import java.time.LocalDate;
  * SchedulePage.java
  * This class creates a schedule page for a week.
  * It displays the days of the week and the TimeChunks within each day.
- * @WIP
+ * 
  * 
  * @author Emily Schwartz
  */
@@ -66,29 +66,12 @@ public class SchedulePage extends Application {
 
                 for (int hour = startHour; hour < endHour; hour++) {
                     StackPane cell = (StackPane) calendarGrid.getChildren().get((hour - START_HOUR + 1) * DAYS.length + dayIndex);
-                    // depending on label, set the color of the cell in a switch statement
-                    switch (event.getLabel()) {
-                        case SELFCARE:
-                            cell.setStyle("-fx-background-color:rgb(154, 187, 246);");
-                            break;
-                        case SCHOOL:
-                            cell.setStyle("-fx-background-color:rgb(245, 91, 155);");
-                            break;
-                        case WORK:
-                            cell.setStyle("-fx-background-color:rgb(249, 199, 64);");
-                            break;
-                        case CHORES:
-                            cell.setStyle("-fx-background-color:rgb(196, 252, 217);");
-                            break;
-                        case STUDY:
-                            cell.setStyle("-fx-background-color:rgb(230, 160, 196);");
-                            break;
-                        case CLUB:
-                            cell.setStyle("-fx-background-color:rgb(238, 211, 121);");
-                            break;
-                        case LEISURE:
-                            cell.setStyle("-fx-background-color:rgb(229, 196, 252);");
-                            break;
+                    // color the event block based on the color given in its labe
+                    if (event.getLabel() != null) {
+                        cell.setStyle("-fx-background-color: " + event.getLabel().getColor() + ";");
+                    } else {
+                        cell.setStyle("-fx-background-color: rgb(156, 162, 157);");
+                    
                     }
                     Label eventLabel = new Label(event.getName());
                     eventLabel.setStyle("-fx-font-weight: bold;");
