@@ -6,4 +6,8 @@ enum Label {
     LEISURE,
     SELFCARE,
     CHORES;
+
+    private String color;
+
+    
 }
