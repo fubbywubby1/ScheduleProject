@@ -4,6 +4,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.LocalTime;
 public class TimeHandler {
+    /**
+     * 
+     * @param key
+     * @param value
+     * @param timeBlocks
+     * @throws UnableToScheduleException
+     */
     public static void addToTimeBlock(TimeChunk key, Event value, HashMap<TimeChunk, Event> timeBlocks) throws UnableToScheduleException {
         if ((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
             && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN))  {
@@ -17,6 +24,12 @@ public class TimeHandler {
         }
     }
 
+    /**
+     * Removes a given timeblock by the given event
+     * @param value is what event we are searching for
+     * @param timeBlocks is the respective day to find
+     * @throws UnableToScheduleException is in case it is given an invalid event
+     */
     public static void removeTimeBlockByEvent(Event value, HashMap<TimeChunk, Event> timeBlocks) throws UnableToScheduleException {
         if (value.equals(null)) {
             throw new UnableToScheduleException(value);
@@ -40,7 +53,7 @@ public class TimeHandler {
      * If the collection has elements in the end, then there is a conflict
      * Otherwise, there is not
      * @param checkTimeChunk is what we are testing
-     * @return true if the collection is empty, false if it has elements
+     * @return the List of elements to check
      */
     public static List<TimeChunk> checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
         Set<TimeChunk> set = timeBlocks.keySet();
