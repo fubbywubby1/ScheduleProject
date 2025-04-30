@@ -6,8 +6,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 /*
