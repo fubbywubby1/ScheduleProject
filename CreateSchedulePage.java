@@ -21,7 +21,7 @@ public class CreateSchedulePage extends Application {
         String day;
         String startTime;
         String endTime;
-        Label label;
+        String label;
         Event event;
         boolean firstRun = true;
 
@@ -59,7 +59,7 @@ public class CreateSchedulePage extends Application {
                 }
                 scheduleName = nameTextBox.getText();
                 // create a new schedule object with this name
-                Schedule schedule = new Schedule(scheduleName);
+                Schedule.setName(scheduleName);
                 firstRun = false;
                 nameTextBox.setDisable(true);
             }
@@ -69,7 +69,7 @@ public class CreateSchedulePage extends Application {
             day = dayComboBox.getValue();
             startTime = hourTextBoxA.getText() + ":" + minuteTextBoxA.getText();
             endTime = hourTextBoxB.getText() + ":" + minuteTextBoxB.getText();
-            Label label = labelComboBox.getValue();
+            label = labelComboBox.getValue();
 
             // Create LocalTimes
             LocalTime startTime = LocalTime.parse(startTime);
