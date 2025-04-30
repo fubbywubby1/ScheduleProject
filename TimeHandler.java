@@ -3,13 +3,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.LocalTime;
+
+/**
+ * This class is composed of static methods that can universally be used to 
+ * alter and deal with TimeChunks and TimeBlockables together.
+ * 
+ * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
+ */
 public class TimeHandler {
     /**
-     * 
-     * @param key
-     * @param value
-     * @param timeBlocks
-     * @throws UnableToScheduleException
+     * This method intakes the TimeChunk, TimeBlockable and HashMap that they are to be added to
+     * and tests to ensure that under all circumstances they can be put in that hashmap
+     * @look at checkNoTimeConflict
+     * @param key is a TimeChunk, that we are trying to place as a key in the hashmap
+     * @param value is a TimeBlockable, that we are trying to place as a value in the hashmap
+     * @param timeBlocks is the targeted hashmap that we want to place these in
+     * @throws UnableToScheduleException is thrown if the TimeChunk or TimeBlockable is invalid under any circumstance
      */
     public static void addToTimeBlock(TimeChunk key, TimeBlockable value, HashMap<TimeChunk, TimeBlockable> timeBlocks) throws UnableToScheduleException {
         if ((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
