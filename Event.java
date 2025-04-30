@@ -1,22 +1,11 @@
 class Event extends TimeBlockable {
-    private String name;
-    private String description;
     private Label label;
     private Boolean isTask;
 
     public Event(String name, String description, Label label, Boolean isTask) {
-        this.name = name;
-        this.description = description;
+        super(name, description);
         this.label = label;
         this.isTask = isTask;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Label getLabel() {
@@ -25,18 +14,6 @@ class Event extends TimeBlockable {
 
     public Boolean getIsTask() {
         return isTask;
-    }
-
-    public void setName(String name) {
-        if (name != null) {
-            this.name = name;
-        }
-    }
-
-    public void setDescription(String description) {
-        if (description != null) {
-            this.description = description;
-        }
     }
 
     /* 
