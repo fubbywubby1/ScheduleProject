@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -25,7 +24,7 @@ public class CreateSchedulePage extends Application {
         String startTime;
         String endTime;
 
-        private static final String[] LABELS = Arrays.stream(Label.values())
+        String[] LABELS = Arrays.stream(Label.values())
                                                .map(Enum::name)
                                                .toArray(String[]::new);
 
@@ -83,7 +82,7 @@ public class CreateSchedulePage extends Application {
             label = labelComboBox.getValue();
 
             // relabel the label
-            Label enumLabel = new Label();
+            Label enumLabel = new Label;
             for (Label l : Label.values())
             {
             if (label.equals(// what do i even put here))

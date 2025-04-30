@@ -18,7 +18,7 @@ public class FindExistingSchedulePage extends Application {
         newScheduleButton.setOnAction(e -> {
              ScheduleGUI.startCreateSchedulePage(primaryStage);
         });
-        //add layout.getchildren
+        
 
 
     }
