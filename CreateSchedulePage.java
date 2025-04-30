@@ -18,6 +18,7 @@ public class CreateSchedulePage extends Application {
     {
         String scheduleName;
         String eventName;
+        String eventDescription;
         String day;
         String startTime;
         String endTime;
@@ -28,6 +29,7 @@ public class CreateSchedulePage extends Application {
         primaryStage.setTitle("Create a New Schedule");
         TextField nameTextBox = new TextField("Enter Schedule Name");
         TextField eventTextBox = new TextField("Enter Event Name");
+        TextField eventDescriptionTextBox = new TextField("Enter Event Description");
         
         ComboBox<String> dayComboBox = new ComboBox<>();
         // for each DaysOfTheWeek enum, cast as a string and put it into an array
