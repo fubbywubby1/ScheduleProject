@@ -9,29 +9,55 @@
             "name": "ScheduleGUI",
             "request": "launch",
             "mainClass": "ScheduleGUI",
-            "projectName": "ScheduleProject_e95cfc01"
+            "projectName": "ScheduleProject",
+            "vmArgs": "--module-path \"/Library/javafx-sdk-24/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web"
+        },
+        {
+            "type": "java",
+            "name": "CreateSchedulePage",
+            "request": "launch",
+            "mainClass": "ScheduleGUI",
+            "projectName": "",
+            "vmArgs": "--module-path \"/Library/javafx-sdk-24/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "--module-path \"/Library/javafx-sdk-21.0.2/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web"
+        },
+        {
+            "type": "java",
+            "name": "FindExistingSchedulePage",
+            "request": "launch",
+            "mainClass": "ScheduleGUI",
+            "projectName": "",
+            "vmArgs": "--module-path \"/Library/javafx-sdk-2/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web"
+        },
+        {
+            "type": "java",
+            "name": "RateStressPage",
+            "request": "launch",
+            "mainClass": "scheduleGUI",
+            "vmArgs": "--module-path \"/Library/javafx-sdk-24/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "SchedulePage",
+            "request": "launch",
+            "vmArgs": "--module-path \"/Library/javafx-sdk-24/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web",
+            "mainClass": "ScheduleGUI",
+            "projectName": ""
         },
         {
             "type": "java",
             "name": "StartPage",
             "request": "launch",
-            "mainClass": "StartPage",
-            "projectName": "ScheduleProject_e95cfc01"
+            "vmArgs": "--module-path \"/Library/javafx-sdk-21.0.2/lib\" --add-modules javafx.controls,javafx.fxml,javafx.web",
+            "mainClass": "ScheduleGUI",
+            "projectName": ""
         },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "vmArgs": "--module-path C:/JavaFX/javafx-sdk-24/lib --add-modules javafx.controls,javafx.web --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Driver",
-            "request": "launch",
-            "vmArgs": "--module-path C:/JavaFX/javafx-sdk-24/lib --add-modules javafx.controls,javafx.web --add-exports javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED",
-            "mainClass": "Driver",
-            "projectName": "ScheduleProject_fb59e152"
-        }
     ]
 }

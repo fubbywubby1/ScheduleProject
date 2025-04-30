@@ -1,4 +1,14 @@
-import com.apple.eawt.Application;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.time.LocalTime;
+import java.util.HashMap;
 
 public class CreateSchedulePage extends Application {
     // stuff go here once we have more functionality done
@@ -49,14 +59,8 @@ public class CreateSchedulePage extends Application {
             // Create a new event object
             event = new Event(eventName, startTime, endTime, label);
 
-            // Check if the schedule already exists
-
             // WRITE IN: passing it to the hashmap
-            try {
-                TimeHandler.addToTimeBlock(new TimeChunk(startTime, endTime), event, Schedule.scheduleMap.get(day));
-            } catch (UnableToScheduleException e) {
-                e.toString();
-            }
+            TimeHandler.addToTimeBlock(new TimeChunk(startTime, EndTime), event, Schedule.scheduleMap.get(day));
 
             // Clear the text fields
             nameTextBox.clear();
@@ -71,9 +75,7 @@ public class CreateSchedulePage extends Application {
             if(!firstRun) {
                 nameTextBox.setDisable(true);
             }
-
-            // Show success message
-            label.setText("Event added successfully!");
+            
         });
 
         Button rateStressButton = new Button("Continue to Rate Stress");
