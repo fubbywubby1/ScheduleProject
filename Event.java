@@ -1,4 +1,4 @@
-class Event implements TimeBlockable {
+class Event extends TimeBlockable {
     private String name;
     private String description;
     private Label label;
