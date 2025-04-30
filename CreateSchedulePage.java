@@ -56,7 +56,6 @@ public class CreateSchedulePage extends Application {
                 firstRun = false;
                 nameTextBox.setDisable(true);
             }
-            // maybe add a for each: for every aspect, if thing is null, spitout error)
             
 
             eventName = eventTextBox.getText();
