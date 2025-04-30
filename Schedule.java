@@ -4,6 +4,7 @@ public class Schedule {
 
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>>();
     private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testScheduleMap;
+    private static String name = "name";;
 
     static {
         scheduleMap.put(DaysOfTheWeek.Sunday, new HashMap<>());
@@ -23,5 +24,26 @@ public class Schedule {
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> getTestSchedule() {
         Schedule.refreshTestSchedule();
         return testScheduleMap;
-    } 
+    }
+
+    public static void setName(String name) {
+        Schedule.name = name;
+    }
+
+    public static String getName() {
+        return name;
+    }
+
+    /*
+    public HashMap<TimeChunk, Event> getDaySchedule(DaysOfTheWeek day) throws Exception {
+        if (day != null) {
+            return scheduleMap.get(day);
+        } else {
+            throw new Exception("Invalid value for inputted day");
+        }
+    }
+    */
+
+    
+    
 }
