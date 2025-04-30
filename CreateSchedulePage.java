@@ -9,11 +9,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This is the CreateSchedulePage class.
+ * It generates the GUI for the user to input their own schedule, and it passes
+ * that information to the Schedule class, which populates their schedule.
+ * When its done, it will pass the user to the RateStressPage.
+ * 
+ * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
+ */
 public class CreateSchedulePage extends Application {
-    // stuff go here once we have more functionality done
-    // should we create the empty schedule at the beginning?
     @Override
     public void start(Stage primaryStage)
     {
@@ -23,11 +30,13 @@ public class CreateSchedulePage extends Application {
         String day;
         String startTime;
         String endTime;
+        ArrayList<String> labelStrings = new ArrayList<>();
+        int numLabels = Label.values().length;
 
-        String[] LABELS = Arrays.stream(Label.values())
-                                               .map(Enum::name)
-                                               .toArray(String[]::new);
-
+        for (Label l : Label.values())
+        {
+            labelStrings.add(l.getName());
+        }
         String label;
         Event event;
         boolean firstRun = true;
@@ -51,7 +60,7 @@ public class CreateSchedulePage extends Application {
 
         ComboBox<String> labelComboBox = new ComboBox<>();
         labelComboBox.getItems().addAll(
-            Arrays.stream(Label.values()).map(Label::name).toList()
+            labelStrings.toArray(new String[numLabels])
         );
         labelComboBox.setPromptText("Choose Label");
 
@@ -82,14 +91,17 @@ public class CreateSchedulePage extends Application {
             label = labelComboBox.getValue();
 
             // relabel the label
-            Label enumLabel = new Label;
-            for (Label l : Label.values())
+            Label enumLabel;
+            for (String l : labelStrings)
             {
-            if (label.equals(// what do i even put here))
-            {
-                enumLabel = l;
-                break;
-            }
+                for (Label labelEnum : Label.values())
+                {
+                    if (labelEnum.getName().equals(l))
+                    {
+                        enumLabel = labelEnum;
+                        break;
+                    }
+                }
             }
 
             // Create LocalTimes
@@ -104,7 +116,7 @@ public class CreateSchedulePage extends Application {
             try {
                 TimeHandler.addToTimeBlock(eventChunk, event, Schedule.scheduleMap.get(day));
             } catch (UnableToScheduleException e) {
-                errorTextArea(e.toString());
+                errorTextArea.appendText(e.toString() + "\n");
             }
 
             // Clear the text fields
@@ -119,7 +131,7 @@ public class CreateSchedulePage extends Application {
 
         Button rateStressButton = new Button("Continue to Rate Stress");
         rateStressButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
-        rateStressButton.setOnAction(e -> {
+        rateStressButton.setOnAction(a -> {
             ScheduleGUI.startRateStressPage(primaryStage);
         });
     }
