@@ -1,11 +1,12 @@
-import java.time.LocalDate;
+import java.time.Set;
 
 interface Reoccurring {
-    FrequencyType getFrequencyType(); //DAILY, WEEKLY, MONTHLY, YEARLY
-    LocalDate getStartDate(); // returns date recurring event started
-    LocalDate getNextOccurence(LocalDate currentDate); // the next day an event 
-    boolean isActive(); // returns if the recurring event is currently active
 
-    
+    Set<DaysOfTheWeek> getRecurringDays(); // returns the set of days on which an item repeats
+    void setRecurringDays(Set<DaysOfTheWeek> days); // replaces the currect recurring days with a new set
+    boolean occursOn(DaysOfTheWeek day); // checks whether or not the item is supposed to happen on the given day
+    void addRecurringDay(DaysOfTheWeek day); // adds a single day to the list of recurring days
+    void removeRecurringDay(DaysOfTheWeek day); // removes a single day from the list of recurring days
+
 }
 
