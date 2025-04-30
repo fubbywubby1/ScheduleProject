@@ -1,5 +1,11 @@
 import java.util.HashMap;
 
+/**
+ * Specifically holds the universal static schedule we use for a week. 
+ * Also holds a dummy test schedule.
+ * 
+ * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
+ */
 public class Schedule {
 
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>();
@@ -17,33 +23,35 @@ public class Schedule {
         testScheduleMap = scheduleMap;
     }
 
+    /**
+     * sets the testSchedule to the current scehdule
+     */
     public static void refreshTestSchedule() {
         testScheduleMap = scheduleMap;
     }
 
+    /**
+     * refreshes the test schedule, then returns it
+     * @return testSchedule
+     */
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> getTestSchedule() {
         Schedule.refreshTestSchedule();
         return testScheduleMap;
     }
 
+    /**
+     * sets the name of the schedule
+     * @param name is the new name
+     */
     public static void setName(String name) {
         Schedule.name = name;
     }
 
+    /**
+     * Returns instance var name
+     * @return name
+     */
     public static String getName() {
         return name;
     }
-
-    /*
-    public HashMap<TimeChunk, Event> getDaySchedule(DaysOfTheWeek day) throws Exception {
-        if (day != null) {
-            return scheduleMap.get(day);
-        } else {
-            throw new Exception("Invalid value for inputted day");
-        }
-    }
-    */
-
-    
-    
 }
