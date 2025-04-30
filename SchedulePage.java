@@ -77,13 +77,13 @@ public class SchedulePage extends Application {
                 for (int hour = startHour; hour < endHour; hour++) {
                     StackPane cell = (StackPane) calendarGrid.getChildren().get((hour - START_HOUR + 1) * DAYS.length + dayIndex);
                     // color the event block based on the color given in its labe
-                    if (event.getLabel() != null) {
-                        cell.setStyle("-fx-background-color: " + event.getLabel().getColor() + ";");
+                    if (((Event) TimeBlock).getLabel() != null && TimeBlock instanceof Event == true) {
+                        cell.setStyle("-fx-background-color: " + ((Event)TimeBlock).getLabel().getColor() + ";");
                     } else {
                         cell.setStyle("-fx-background-color: rgb(156, 162, 157);");
                     
                     }
-                    Label eventLabel = new Label(event.getName());
+                    Label eventLabel = new Label(TimeBlock.getName());
                     eventLabel.setStyle("-fx-font-weight: bold;");
                     cell.getChildren().add(eventLabel);
                 }
