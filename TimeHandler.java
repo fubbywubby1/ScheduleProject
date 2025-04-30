@@ -1,36 +1,25 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.LocalTime;
 public class TimeHandler {
-    //To Do:
-    //Make sure there's not time conflicts when adding a timeBlock
-    public static void addToTimeBlock(TimeChunk key, Event value, HashMap<TimeChunk, Event> timeBlocks) throws Exception {
+    public static void addToTimeBlock(TimeChunk key, Event value, HashMap<TimeChunk, Event> timeBlocks) throws UnableToScheduleException {
         if ((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
             && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN))  {
-            throw new Exception("Invalid Time");
+            throw new UnableToScheduleException(value, key);
         } else if (value.equals(null)) {
-            throw new Exception("Null input");
-        } else if (checkNoTimeConflict(key, timeBlocks)) {
-            throw new Exception("Time Conflict found");
+            throw new UnableToScheduleException(value, key);
+        } else if (checkNoTimeConflict(key, timeBlocks).isEmpty()) {
+            throw new UnableToScheduleException(value, key, checkNoTimeConflict(key, timeBlocks));
         } else {
             timeBlocks.put(key, value);
         }
     }
 
-    /**
-    public static Event getEvent(TimeChunk key, HashMap<TimeChunk, Event> timeBlocks) {
-        return timeBlocks.get(key);
-    }
-
-    public static void removeTimeBlock(TimeChunk key) {
-        timeBlocks.remove(key);
-    }
-    */
-
-    public static void removeTimeBlockByEvent(Event value, HashMap<TimeChunk, Event> timeBlocks) throws Exception {
+    public static void removeTimeBlockByEvent(Event value, HashMap<TimeChunk, Event> timeBlocks) throws UnableToScheduleException {
         if (value.equals(null)) {
-            throw new Exception("Null input");
+            throw new UnableToScheduleException(value);
         } else {
             for (TimeChunk key: timeBlocks.keySet()) {
                 if (timeBlocks.get(key).equals(value)) {
@@ -53,18 +42,14 @@ public class TimeHandler {
      * @param checkTimeChunk is what we are testing
      * @return true if the collection is empty, false if it has elements
      */
-    public static Boolean checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
+    public static List<TimeChunk> checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, Event> timeBlocks) {
         Set<TimeChunk> set = timeBlocks.keySet();
-        Set<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
+        List<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
                                              .filter(t -> checkTimeChunk.getEndTime().isAfter(t.getStartTime()))
                                              .filter(t -> checkTimeChunk.getStartTime().isAfter(t.getStartTime()) 
                                                           || checkTimeChunk.getEndTime().isBefore(t.getEndTime()))
-                                             .collect(Collectors.toSet());
-        if (toCheck.isEmpty() == true) {
-            return true;
-        } else {
-            return false;
-        }
+                                             .collect(Collectors.toList());
+        return toCheck;
     }
     
 }

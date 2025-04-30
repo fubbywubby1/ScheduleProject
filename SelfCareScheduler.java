@@ -44,12 +44,14 @@ public class SelfCareScheduler {
         );
         }
 
-        public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) {
+        public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) throws UnableToScheduleException {
             double StressAVG = optimize(labelStress);
             List<Event> activitiesToTest = recommendActivities(StressAVG);
             activitiesToTest = testActivities(activitiesToTest);
             if (activitiesToTest.isEmpty()) {
                 System.out.println("Every event was able to be placed in");
+            } else {
+                throw new UnableToScheduleException(activitiesToTest);
             }
         }
 
@@ -61,13 +63,7 @@ public class SelfCareScheduler {
             return recommendedEvents;
         }
 
-        private List<Event> testActivities(List<Event> activitiesToTest) {
-            /*
-            to do:
-            Check, for each hour in a day, if we can put the respective event in that hour.
-            Have to create a timeChunk in the meantime to represent that event - thats the issue
-             */            
-            Schedule.refreshTestSchedule();
+        private List<Event> testActivities(List<Event> activitiesToTest) {          
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule = Schedule.getTestSchedule();
             for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
                 removeLargestValue(testSchedule);
@@ -76,7 +72,7 @@ public class SelfCareScheduler {
                 for (DaysOfTheWeek key: testSchedule.keySet()) {
                     for (int k = 8; k < 22; k++) {
                         TimeChunk testChunk = new TimeChunk(LocalTime.of(k, 0), LocalTime.of(k + 1, 0));
-                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key))) {
+                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key)).isEmpty()) {
                             testSchedule.get(key).put(testChunk, testEvent);
                             activitiesToTest.remove(testEvent);
                             break;

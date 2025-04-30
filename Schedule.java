@@ -21,6 +21,7 @@ public class Schedule {
     }
 
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> getTestSchedule() {
+        Schedule.refreshTestSchedule();
         return testScheduleMap;
     }
 
