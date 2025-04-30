@@ -4,7 +4,7 @@ import java.time.LocalDate;
  * SchedulePage.java
  * This class creates a schedule page for a week.
  * It displays the days of the week and the TimeChunks within each day.
- * @WIP
+ * 
  * 
  * @author Emily Schwartz
  */
@@ -66,7 +66,11 @@ public class SchedulePage extends Application {
 
                 for (int hour = startHour; hour < endHour; hour++) {
                     StackPane cell = (StackPane) calendarGrid.getChildren().get((hour - START_HOUR + 1) * DAYS.length + dayIndex);
-                    // depending on label, set the color of the cell in a switch statement
+                    // color the event block based on the color given in its labe
+                    if (event.getLabel() != null) {
+                        cell.setStyle("-fx-background-color: " + event.getLabel().getColor() + ";");
+                    } else {
+                        cell.setStyle("-fx-background-color: rgb(156, 162, 157);");
                     
                     }
                     Label eventLabel = new Label(event.getName());
