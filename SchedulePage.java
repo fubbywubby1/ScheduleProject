@@ -69,9 +69,9 @@ public class SchedulePage extends Application {
         for (DaysOfTheWeek day : schedule.keySet()) {
             HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
             for (TimeChunk timeChunk : events.keySet()) {
-                Event event = events.get(timeChunk);
-                int startHour = timeChunk.getStartHour();
-                int endHour = timeChunk.getEndHour();
+                TimeBlockable TimeBlock = events.get(timeChunk);
+                int startHour = timeChunk.getStartTime().getHour();
+                int endHour = timeChunk.getEndTime().getHour();
                 int dayIndex = day.ordinal() + 1; // +1 because column 0 is time
 
                 for (int hour = startHour; hour < endHour; hour++) {
