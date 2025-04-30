@@ -1,3 +1,9 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 /*
  * StartPage.java
  * This creates the start page for the application, which
@@ -15,12 +21,12 @@ public class StartPage extends Application {
         newScheduleButton.setOnAction(e -> {
              ScheduleGUI.startCreateSchedulePage(primaryStage);
         });
-        Button loadScheduleButton = new Button("Load Existing Schedule");`
+        Button loadScheduleButton = new Button("Load Existing Schedule");
         loadScheduleButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         loadScheduleButton.setOnAction(e -> {
             ScheduleGUI.startFindExistingSchedulePage(primaryStage);
         });
-    `   VBox layout = new VBox(10);
+       VBox layout = new VBox(10);
         layout.getChildren().addAll(newScheduleButton, loadScheduleButton);
         Scene scene = new Scene(layout, 300, 200);
         primaryStage.setScene(scene);

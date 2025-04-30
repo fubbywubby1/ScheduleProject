@@ -1,3 +1,8 @@
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class FindExistingSchedulePage extends Application {
     @Override

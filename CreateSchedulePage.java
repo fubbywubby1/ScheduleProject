@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class CreateSchedulePage extends Application {
     // stuff go here once we have more functionality done
@@ -44,7 +45,9 @@ public class CreateSchedulePage extends Application {
         TextField minuteTextBoxB = new TextField("Enter End Minute");
 
         ComboBox<String> labelComboBox = new ComboBox<>();
-        labelComboBox.getItems().addAll(Label.values());
+        labelComboBox.getItems().addAll(
+            Arrays.stream(Label.values()).map(Label::name).toList()
+        );
         labelComboBox.setPromptText("Choose Label");
 
         // Text area to output error messages
@@ -73,13 +76,24 @@ public class CreateSchedulePage extends Application {
             endTime = hourTextBoxB.getText() + ":" + minuteTextBoxB.getText();
             label = labelComboBox.getValue();
 
-            // Create LocalTimes
-            LocalTime startTime = LocalTime.parse(startTime);
-            LocalTime endTime = LocalTime.parse(endTime);
+            // relabel the label
+            Label enumLabel = new Label();
+            for (Label l : Label.values())
+            {
+            if (label.equals(value))
+            {
+                enumLabel = l;
+                break;
+            }
+            }
 
-            TimeChunk eventChunk = new TimeChunk(startTime, endTime);
+            // Create LocalTimes
+            LocalTime localStartTime = LocalTime.parse(startTime);
+            LocalTime localEndTime = LocalTime.parse(endTime);
+
+            TimeChunk eventChunk = new TimeChunk(localStartTime, localEndTime);
             // Create a new event object
-            event = new Event(eventName, eventDescription, label, false);
+            event = new Event(eventName, eventDescription, enumLabel, false);
 
             // passing it to the hashmap, and if it fails, catch the exception and print it
             try {
