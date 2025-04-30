@@ -1,11 +1,21 @@
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+/**
+ * This class holds a static hashmap of events to recommend for a certain stresslevel
+ * which is given by the GUI
+ * It uses a variety of methods to help calculate and test these events in the user's schedule
+ * 
+ * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
+ */
 public class SelfCareScheduler {
-    static Map<Predicate<Double>, List<Event>> stressToEvents = new HashMap<>();
+    //This is private and static so it cannot be altered whatsoever
+    private static Map<Predicate<Double>, List<Event>> stressToEvents = new HashMap<>();
 
     static {
         stressToEvents.put(
@@ -44,6 +54,12 @@ public class SelfCareScheduler {
         );
         }
 
+        /**
+         * This is the driver method of the class, it references the other methods
+         * @look at all the methods below this.
+         * @param labelStress is the total stress of the user per label
+         * @throws UnableToScheduleException in case we cannot apply all the events to the user's schedule
+         */
         public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) throws UnableToScheduleException {
             double StressAVG = optimize(labelStress);
             List<Event> activitiesToTest = recommendActivities(StressAVG);
@@ -51,10 +67,17 @@ public class SelfCareScheduler {
             if (activitiesToTest.isEmpty()) {
                 System.out.println("Every event was able to be placed in");
             } else {
-                throw new UnableToScheduleException(activitiesToTest);
+                List<TimeBlockable> activitiesToBlocks = new ArrayList<>();
+                activitiesToTest.forEach(a -> activitiesToBlocks.add(a));
+                throw new UnableToScheduleException(activitiesToBlocks);
             }
         }
 
+        /**
+         * A simple stream that solely tests StressAVG to find the Events to recommend
+         * @param StressAVG is used to find what to recommend
+         * @return a List<Event> that we use later to test in the user's schedule
+         */
         private List<Event> recommendActivities(double StressAVG) {
             List<Event> recommendedEvents = stressToEvents.entrySet().stream()
                                                                      .filter(entry -> entry.getKey().test(StressAVG))
@@ -63,8 +86,16 @@ public class SelfCareScheduler {
             return recommendedEvents;
         }
 
+        /**
+         * This method takes in the activities to test, removes the most stressful days,
+         * then tests each individual event throughout the given timeblocks in each respective day
+         * If there are still events leftover that cannot work, we through an error
+         * @param activitiesToTest is the activities we want to test
+         * @return a List<Event>, if its empty, everything was successful
+         * @throws UnableToScheduleException if we cannot apply all events to the user's schedule
+         */
         private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException{          
-            HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule = Schedule.getTestSchedule();
+            HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule = Schedule.getTestSchedule();
             for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
                 removeLargestValue(testSchedule);
             }
@@ -89,7 +120,11 @@ public class SelfCareScheduler {
             return activitiesToTest;
         }
 
-        private void removeLargestValue(HashMap<DaysOfTheWeek, HashMap<TimeChunk, Event>> testSchedule) {
+        /**
+         * Using a stream, this removes the largest value of a HashMap
+         * @param testSchedule is what we are removing the largest value of
+         */
+        private void removeLargestValue(HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule) {
             testSchedule.entrySet().removeIf(entry -> entry.getValue().size() ==
                                                                       testSchedule.values().stream()
                                                                      .mapToInt(HashMap::size)
@@ -97,6 +132,11 @@ public class SelfCareScheduler {
                                                                      .getAsInt());
         }
 
+        /**
+         * Finds the average of all the labels through a stream
+         * @param labelStress is a hashmap of a label and integer
+         * @return the average of it all
+         */
         public double optimize(HashMap<Label, Integer> labelStress) {;
             double stressAVG = labelStress.values()
                                 .stream()
