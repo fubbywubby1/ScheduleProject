@@ -41,6 +41,9 @@ public class CreateSchedulePage extends Application {
         labelComboBox.getItems().addAll(Label.values());
         labelComboBox.setPromptText("Choose Label");
 
+        // Text area to output error messages
+        TextArea errorTextArea = new TextArea();
+
         Button addEventButton = new Button("Add Event");
         addEventButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
         addEventButton.setOnAction(e -> {
@@ -70,11 +73,11 @@ public class CreateSchedulePage extends Application {
             // Create a new event object
             event = new Event(eventName, startTime, endTime, label);
 
-            // WRITE IN: passing it to the hashmap
+            // passing it to the hashmap, and if it fails, catch the exception and print it
             try {
                 TimeHandler.addToTimeBlock(new TimeChunk(startTime, EndTime), event, Schedule.scheduleMap.get(day));
             } catch (UnableToScheduleException e) {
-                e.toString();
+                errorTextArea(e.toString());
             }
 
             // Clear the text fields
