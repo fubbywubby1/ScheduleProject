@@ -60,8 +60,12 @@ public class SelfCareScheduler {
          * @param labelStress is the total stress of the user per label
          * @throws UnableToScheduleException in case we cannot apply all the events to the user's schedule
          */
-        public void scheduleSelfCareActivities(HashMap<Label, Integer> labelStress) throws UnableToScheduleException {
-            double StressAVG = optimize(labelStress);
+        public void scheduleSelfCareActivities(ArrayList<Integer> stressLevels) throws UnableToScheduleException {
+            double StressAVG = 0;
+            for (int i = 0; i < stressLevels.size(); i++) {
+                StressAVG += stressLevels.get(i);
+            }
+            StressAVG = StressAVG / stressLevels.size();
             List<Event> activitiesToTest = recommendActivities(StressAVG);
             activitiesToTest = testActivities(activitiesToTest);
             if (activitiesToTest.isEmpty()) {
@@ -130,20 +134,6 @@ public class SelfCareScheduler {
                                                                      .mapToInt(HashMap::size)
                                                                      .max()
                                                                      .getAsInt());
-        }
-
-        /**
-         * Finds the average of all the labels through a stream
-         * @param labelStress is a hashmap of a label and integer
-         * @return the average of it all
-         */
-        public double optimize(HashMap<Label, Integer> labelStress) {;
-            double stressAVG = labelStress.values()
-                                .stream()
-                                .mapToInt(Integer::intValue)
-                                .average()
-                                .getAsDouble();
-            return stressAVG;
         }
 
 
