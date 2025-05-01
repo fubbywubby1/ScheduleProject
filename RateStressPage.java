@@ -57,21 +57,19 @@ public class RateStressPage extends Application {
         );
         submitButton.setOnAction(e -> {
             stressLevels.clear();
-            for (Slider s : sliders) {
-                stressLevels.add((int) s.getValue());
-            }
-
-            primaryStage.close();
-
+        for (Slider s : sliders) {
+        stressLevels.add((int) s.getValue());
+         }
             try {
-                SelfCareScheduler scheduler = new SelfCareScheduler();
-                scheduler.scheduleSelfCareActivities(stressLevels);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        SelfCareScheduler scheduler = new SelfCareScheduler();
+        scheduler.scheduleSelfCareActivities(stressLevels);
+        } catch (Exception ex) {
+        ex.printStackTrace();
+    }
 
-        ScheduleGUI.startSchedulePage(primaryStage);
-        });
+    // Transition to the SchedulePage using the same stage
+    ScheduleGUI.startSchedulePage(primaryStage);
+    });
 
         grid.add(submitButton, 0, labels.length, 2, 1);
         Scene scene = new Scene(grid, 550, 400);
@@ -79,7 +77,6 @@ public class RateStressPage extends Application {
         primaryStage.show();
     }
 
-    // 👇 Move this OUTSIDE the start() method
     private Slider createStyledSlider() {
         Slider slider = new Slider(0, 10, 0);
         slider.setMajorTickUnit(1);
