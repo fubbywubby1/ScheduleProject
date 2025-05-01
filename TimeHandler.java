@@ -26,7 +26,7 @@ public class TimeHandler {
             throw new UnableToScheduleException(value, key);
         } else if (value.equals(null)) {
             throw new UnableToScheduleException(value, key);
-        } else if (2==3) {
+        } else if (!(checkNoTimeConflict(key, timeBlocks).isEmpty())) {
             throw new UnableToScheduleException(value, key, checkNoTimeConflict(key, timeBlocks));
         } else {
             timeBlocks.put(key, value);
