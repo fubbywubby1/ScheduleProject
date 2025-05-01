@@ -24,26 +24,26 @@ public class SelfCareScheduler {
 
     static {
         stressToEvents.put(
-            StressAVG -> StressAVG >= 0 && StressAVG <= 1,
+            StressAVG -> StressAVG >= 0 && StressAVG < 2,
             List.of(new Event("Do a Craft", "Create something new!", Label.LEISURE, false), 
                     new Event("Hit the gym", "It's leg day!", Label.SELFCARE, false),
                     new Event("Organize your space", "...your room is quite messy", Label.SELFCARE, false))
         );
         stressToEvents.put(
-            StressAVG -> StressAVG >= 2 && StressAVG <= 3,
+            StressAVG -> StressAVG >= 2 && StressAVG < 4,
             List.of(new Event("Journal", "Write your feelings down", Label.SELFCARE, false), 
                     new Event("Meal with friends", "It's always a good time to hangout.", Label.LEISURE, false),
                     new Event("Do a Craft", "Create something new!", Label.LEISURE, false))
         );
         stressToEvents.put(
-            StressAVG -> StressAVG >= 4 && StressAVG <= 5,
+            StressAVG -> StressAVG >= 4 && StressAVG < 6,
             List.of(new Event("Spend time outdoors", "It's beautiful outside!", Label.SELFCARE, false), 
                     new Event("Read", "As long as its not Shakespeare.", Label.LEISURE, false),
                     new Event("Journal", "Write your feelings down", Label.SELFCARE, false),
                     new Event("Go for a walk", "Take your dog too.", Label.SELFCARE, false))
         );
         stressToEvents.put(
-            StressAVG -> StressAVG >= 6 && StressAVG <= 7,
+            StressAVG -> StressAVG >= 6 && StressAVG < 8,
             List.of(new Event("Watch a show", "...maybe binge watch an entire series", Label.LEISURE, false), 
                     new Event("Yoga", "It helps with your back pain.", Label.SELFCARE, false),
                     new Event("Journal", "Write your feelings down", Label.SELFCARE, false),
