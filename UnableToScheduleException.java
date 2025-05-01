@@ -131,9 +131,17 @@ public class UnableToScheduleException extends Exception {
      * Converts all instance variables to Strings
      */
     public String toString() {
-        return "Invalid Event(s): " + invalidBlocks.toString() + "\n" +
-               "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n" +
-               "Conflicts With: " + conflictingChunks.get(0).getStartTime() + " to " + conflictingChunks.get(0).getEndTime() + " and " +
+        String returnable = "";
+        if (invalidBlocks != null) {
+            returnable += "Invalid Event(s): " + invalidBlocks.toString() + "\n";
+        }
+        if (invalidTimeChunk != null) {
+            returnable += "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n";
+        }
+        if (conflictingChunks != null) {
+            returnable += "Conflicts With: " + conflictingChunks.get(0).getStartTime() + " to " + conflictingChunks.get(0).getEndTime() + " and " +
                 conflictingChunks.get(1).getStartTime() + " to " + conflictingChunks.get(1).getEndTime();
+        }
+        return returnable;
     }
 }
