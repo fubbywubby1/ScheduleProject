@@ -100,9 +100,6 @@ public class SelfCareScheduler {
          */
         private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException{          
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule = Schedule.getTestSchedule();
-            for (int i = 0; i < 6 - activitiesToTest.size(); i++) {
-                removeLargestValue(testSchedule);
-            }
             for (Event testEvent: activitiesToTest) {
                 for (DaysOfTheWeek key: testSchedule.keySet()) {
                     for (int k = 8; k < 22; k++) {
