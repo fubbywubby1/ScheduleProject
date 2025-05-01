@@ -117,7 +117,7 @@ public class SelfCareScheduler {
                         if (TimeHandler.checkNoTimeConflict(testChunk, daySchedule).isEmpty()) {
                             try {
                                 TimeHandler.addToTimeBlock(testChunk, testEvent, daySchedule);
-                                Schedule.add(testChunk, testEvent, day);
+                                daySchedule.put(testChunk, testEvent);
                                 scheduled = true;
                                 break;
                             } catch (UnableToScheduleException e) {
@@ -131,6 +131,12 @@ public class SelfCareScheduler {
         
                 if (scheduled) {
                     iterator.remove();
+                }
+            }
+            
+            for (DaysOfTheWeek day : testSchedule.keySet()) {
+                for (Map.Entry<TimeChunk, TimeBlockable> entry : testSchedule.get(day).entrySet()) {
+                    Schedule.add(entry.getKey(), entry.getValue(), day);
                 }
             }
         
