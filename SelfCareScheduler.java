@@ -105,8 +105,8 @@ public class SelfCareScheduler {
         
             // Track how many times each event has been scheduled
             Map<Event, Integer> eventCounts = new HashMap<>();
-            // Track the last day an event was scheduled on, to avoid consecutive scheduling
-            Map<Event, DaysOfTheWeek> lastScheduledDay = new HashMap<>();
+            // Track the days each event has been scheduled on, to avoid scheduling them on consecutive days
+            Map<Event, List<DaysOfTheWeek>> eventScheduledDays = new HashMap<>();
         
             Iterator<Event> iterator = unscheduled.iterator();
             while (iterator.hasNext()) {
@@ -114,17 +114,19 @@ public class SelfCareScheduler {
                 int timesScheduled = eventCounts.getOrDefault(testEvent, 0);
         
                 if (timesScheduled >= 2) {
-                    // This event was already scheduled twice or more
+                    // This event already scheduled twice
                     continue;
                 }
         
                 boolean scheduled = false;
         
+                // Find available days with gaps
                 for (DaysOfTheWeek day : testSchedule.keySet()) {
-                    // Check if we already scheduled the event twice or if the event was scheduled the previous day
+                    // Skip if event was scheduled already or has consecutive day issue
                     if (eventCounts.getOrDefault(testEvent, 0) >= 2 || 
-                        (lastScheduledDay.containsKey(testEvent) && lastScheduledDay.get(testEvent) == day)) {
-                        continue; // Skip if the event is scheduled twice or placed on consecutive days
+                        eventScheduledDays.getOrDefault(testEvent, new ArrayList<>()).contains(day) ||
+                        hasConsecutiveDayConflict(testEvent, day, eventScheduledDays)) {
+                        continue;
                     }
         
                     HashMap<TimeChunk, TimeBlockable> daySchedule = testSchedule.get(day);
@@ -137,12 +139,13 @@ public class SelfCareScheduler {
                                 TimeHandler.addToTimeBlock(testChunk, testEvent, daySchedule);
                                 daySchedule.put(testChunk, testEvent);
         
+                                // Update event count and record scheduled day
                                 eventCounts.put(testEvent, timesScheduled + 1);
-                                lastScheduledDay.put(testEvent, day);
+                                eventScheduledDays.computeIfAbsent(testEvent, k -> new ArrayList<>()).add(day);
                                 scheduled = true;
                                 break;
                             } catch (UnableToScheduleException e) {
-                                // This should happen if anything, ignore this
+                                // ignore if we can't schedule
                             }
                         }
                     }
@@ -150,14 +153,13 @@ public class SelfCareScheduler {
                     if (scheduled) break;
                 }
         
-                if (scheduled && eventCounts.get(testEvent) < 2) {
-                    // Keep it
-                } else if (eventCounts.getOrDefault(testEvent, 0) >= 2) {
-                    iterator.remove(); // No more scheduling this event
+                // If scheduled, remove from unscheduled list
+                if (scheduled) {
+                    iterator.remove();
                 }
             }
         
-            // Implement the events in the actual schedule
+            // Apply scheduled events to the main schedule
             for (DaysOfTheWeek day : testSchedule.keySet()) {
                 for (Map.Entry<TimeChunk, TimeBlockable> entry : testSchedule.get(day).entrySet()) {
                     Schedule.add(entry.getKey(), entry.getValue(), day);
@@ -167,6 +169,27 @@ public class SelfCareScheduler {
             return unscheduled;
         }
         
+        /**
+         * A simple method that checks if placing an event 
+         * would cause it to be placed in consecutive days with another event
+         * @param event is what we are testing
+         * @param currentDay is what we are testing
+         * @param eventScheduledDays is the list we are looking through
+         * @return true or false
+         */
+        private boolean hasConsecutiveDayConflict(Event event, DaysOfTheWeek currentDay, 
+                                                  Map<Event, List<DaysOfTheWeek>> eventScheduledDays) {
+            List<DaysOfTheWeek> scheduledDays = eventScheduledDays.getOrDefault(event, new ArrayList<>());
+            if (scheduledDays.isEmpty()) {
+                return false; // No prior days, no conflict
+            }
+        
+            // Get the last scheduled day of the event and check if it's consecutive to current day
+            DaysOfTheWeek lastScheduled = scheduledDays.get(scheduledDays.size() - 1);
+            return Math.abs(lastScheduled.ordinal() - currentDay.ordinal()) == 1;
+        }
+        
+        
         
         
         
@@ -175,6 +198,7 @@ public class SelfCareScheduler {
          * Using a stream, this removes the largest value of a HashMap
          * @param testSchedule is what we are removing the largest value of
          */
+        /*
         private void removeLargestValue(HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule) {
             testSchedule.entrySet().removeIf(entry -> entry.getValue().size() ==
                                                                       testSchedule.values().stream()
@@ -182,6 +206,7 @@ public class SelfCareScheduler {
                                                                      .max()
                                                                      .getAsInt());
         }
+        */
 
 
     }
