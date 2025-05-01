@@ -24,9 +24,9 @@ public class TimeHandler {
         if (!((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
         && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN)))  {
             throw new UnableToScheduleException(value, key);
-        } else if (2 == 3) {
+        } else if (value.equals(null)) {
             throw new UnableToScheduleException(value, key);
-        } else if (checkNoTimeConflict(key, timeBlocks).isEmpty()) {
+        } else if (2==3) {
             throw new UnableToScheduleException(value, key, checkNoTimeConflict(key, timeBlocks));
         } else {
             timeBlocks.put(key, value);
