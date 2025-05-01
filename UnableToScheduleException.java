@@ -141,7 +141,7 @@ public class UnableToScheduleException extends Exception {
         if (invalidTimeChunk != null) {
             returnable += "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n";
         }
-        if (conflictingChunks != null) {
+        if (!conflictingChunks.isEmpty()) {
             returnable += "Conflicts With: ";
             for (TimeChunk t: conflictingChunks) {
                 returnable += t.getStartTime() + "" + "" + t.getEndTime();
