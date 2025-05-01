@@ -1,12 +1,10 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.Arrays;
@@ -93,10 +91,9 @@ public class SchedulePage extends Application {
                     if (timeBlock instanceof Event) {
                         Event event = (Event) timeBlock;
                         if (event.getLabel() != null) {
+                            // Set background color directly on StackPane
                             String eventColor = event.getLabel().getColor();
-                            Region background = new Region();
-                            background.setStyle("-fx-background-color: " + eventColor + ";");
-                            cell.getChildren().add(background); // Set background as the full size of the cell
+                            cell.setStyle("-fx-background-color: " + eventColor + "; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
                         }
                     } else {
                         cell.setStyle("-fx-background-color: #A0A2A1; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
@@ -106,7 +103,7 @@ public class SchedulePage extends Application {
                     Label eventLabel = new Label(timeBlock.getName());
                     eventLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;");
                     eventLabel.setPadding(new Insets(5));
-                    StackPane.setAlignment(eventLabel, Pos.TOP_CENTER); // Align label at the top of the cell
+                    StackPane.setAlignment(eventLabel, Pos.CENTER); // Align label to the center of the cell
 
                     cell.getChildren().add(eventLabel);
 
