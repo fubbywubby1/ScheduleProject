@@ -103,9 +103,19 @@ public class SelfCareScheduler {
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule = Schedule.getTestSchedule();
             List<Event> unscheduled = new ArrayList<>(activitiesToTest);
         
+            // Track how many times each event has been scheduled
+            Map<Event, Integer> eventCounts = new HashMap<>();
+        
             Iterator<Event> iterator = unscheduled.iterator();
             while (iterator.hasNext()) {
                 Event testEvent = iterator.next();
+                int timesScheduled = eventCounts.getOrDefault(testEvent, 0);
+        
+                if (timesScheduled >= 2) {
+                    // This event already scheduled twice
+                    continue;
+                }
+        
                 boolean scheduled = false;
         
                 for (DaysOfTheWeek day : testSchedule.keySet()) {
@@ -118,10 +128,12 @@ public class SelfCareScheduler {
                             try {
                                 TimeHandler.addToTimeBlock(testChunk, testEvent, daySchedule);
                                 daySchedule.put(testChunk, testEvent);
+        
+                                eventCounts.put(testEvent, timesScheduled + 1);
                                 scheduled = true;
                                 break;
                             } catch (UnableToScheduleException e) {
-                                //This is very likely, so there's no point in throwing anything
+                                // Very likely, so ignore
                             }
                         }
                     }
@@ -129,11 +141,13 @@ public class SelfCareScheduler {
                     if (scheduled) break;
                 }
         
-                if (scheduled) {
-                    iterator.remove();
+                if (scheduled && eventCounts.get(testEvent) < 2) {
+                    // Keep it in the list to schedule again
+                } else if (eventCounts.getOrDefault(testEvent, 0) >= 2) {
+                    iterator.remove(); 
                 }
             }
-            
+
             for (DaysOfTheWeek day : testSchedule.keySet()) {
                 for (Map.Entry<TimeChunk, TimeBlockable> entry : testSchedule.get(day).entrySet()) {
                     Schedule.add(entry.getKey(), entry.getValue(), day);
@@ -142,6 +156,7 @@ public class SelfCareScheduler {
         
             return unscheduled;
         }
+        
         
         
 
