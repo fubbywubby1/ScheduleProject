@@ -1,5 +1,7 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -60,28 +62,32 @@ public class SchedulePage extends Application {
         // Populate cells with events from Schedule class
         HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> schedule = Schedule.scheduleMap;
 
-        // Add debug statements to verify scheduleMap content (for now)
-        System.out.println("Schedule Map Contents: ");
-        for (DaysOfTheWeek day : schedule.keySet()) {
-            HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
-            System.out.println("Day: " + day);
-            for (TimeChunk timeChunk : events.keySet()) {
-                TimeBlockable event = events.get(timeChunk);
-                System.out.println("  Event: " + event.getName() + " at " + timeChunk.getStartTime());
-            }
-        }
-
         // Loop through scheduleMap to place events in the grid
         for (DaysOfTheWeek day : schedule.keySet()) {
             HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
             for (TimeChunk timeChunk : events.keySet()) {
                 TimeBlockable timeBlock = events.get(timeChunk);
                 int startHour = timeChunk.getStartTime().getHour();
+                int startMinute = timeChunk.getStartTime().getMinute();
                 int endHour = timeChunk.getEndTime().getHour();
+                int endMinute = timeChunk.getEndTime().getMinute();
+
+                int startRow = startHour - START_HOUR + 1; // Adjust row index for start hour
+                int endRow = endHour - START_HOUR + 1;  // Adjust row index for end hour
+
+                if (startMinute > 0) {
+                    startRow++; // Adjust if the event starts in the middle of an hour
+                }
+
+                if (endMinute > 0) {
+                    endRow++; // Adjust if the event ends in the middle of an hour
+                }
+
                 int dayIndex = day.ordinal() + 1; // +1 because column 0 is time
 
-                for (int hour = startHour; hour < endHour; hour++) {
-                    StackPane cell = (StackPane) calendarGrid.getChildren().get((hour - START_HOUR + 1) * DAYS.length + dayIndex);
+                // Place the event in the appropriate cells
+                for (int row = startRow; row <= endRow; row++) {
+                    StackPane cell = new StackPane();
                     // Set background color based on the event's label
                     if (timeBlock instanceof Event) {
                         Event event = (Event) timeBlock;
@@ -91,11 +97,17 @@ public class SchedulePage extends Application {
                     } else {
                         cell.setStyle("-fx-background-color: #A0A2A1; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
                     }
-                    // Add event label inside the cell
+
+                    // Create a label to be placed on top of the cell
                     Label eventLabel = new Label(timeBlock.getName());
                     eventLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;");
                     eventLabel.setPadding(new Insets(5));
+                    StackPane.setAlignment(eventLabel, Pos.TOP_CENTER); // Align label at the top of the cell
+
                     cell.getChildren().add(eventLabel);
+
+                    // Add the cell to the grid
+                    calendarGrid.add(cell, dayIndex, row);
                 }
             }
         }
