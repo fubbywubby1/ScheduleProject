@@ -114,7 +114,7 @@ public class SelfCareScheduler {
                 int timesScheduled = eventCounts.getOrDefault(testEvent, 0);
         
                 if (timesScheduled >= 2) {
-                    // This event already scheduled twice
+                    // This event was already scheduled twice or more
                     continue;
                 }
         
