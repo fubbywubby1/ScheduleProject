@@ -2,10 +2,13 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -113,14 +116,46 @@ public class SchedulePage extends Application {
             }
         }
 
-        // Scrollable view for the calendar grid
-        ScrollPane scrollPane = new ScrollPane(calendarGrid);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        // Create a Save button
+        Button saveButton = new Button("Save Schedule");
+        saveButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-background-color: #b3d9ff; -fx-text-fill: white; -fx-background-radius: 8;");
+        saveButton.setOnAction(e -> {
+            // When save is clicked, serialize the schedule
+            String scheduleName = Schedule.getName(); // Use dynamic name if needed
+            boolean isSaved = FileReader.saveAs(scheduleName);
+            if (isSaved) {
+                showMessage("Schedule saved successfully!");
+            } else {
+                showMessage("Failed to save schedule.");
+            }
+        });
+
+        // Create a layout for the schedule page with Save button
+        VBox layout = new VBox(15, new Label("Your Schedule"), calendarGrid, saveButton);
+        layout.setPadding(new Insets(25));
+        layout.setStyle("-fx-background-color: #ffe6f0;");
+
+        // Wrap the entire layout in a ScrollPane
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(layout);  // The scrollable content is the VBox containing the grid and button
+        scrollPane.setFitToWidth(true); // Make sure the width fits the screen
+        scrollPane.setFitToHeight(true); // Make sure the height fits the screen
 
         // Set the scene and stage
-        Scene scene = new Scene(scrollPane, 1000, 700);  // Increased width for better readability
+        Scene scene = new Scene(scrollPane, 1000, 700);  // Adjust scene size as needed
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void showMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Schedule Save Status");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
