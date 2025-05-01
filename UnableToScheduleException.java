@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.logging.Logger;
+
 /**
  * This is an extension of Exception, it can hold a TimeBlockable that is invalid, along with
  * the corresponding timechunk that it is trying to be placed with in a hashmap.
@@ -16,6 +18,8 @@ public class UnableToScheduleException extends Exception {
 
     private List<TimeChunk> conflictingChunks;
 
+    private static final Logger logger = Logger.getLogger("UnableToScheduleException");
+
     /**
      * Constructor for only the invalid TimeBlockables we have
      * @param invalidBlocks is initialized to our instance var
@@ -23,6 +27,7 @@ public class UnableToScheduleException extends Exception {
     public UnableToScheduleException(List<TimeBlockable> invalidBlocks) {
         this.invalidBlocks = invalidBlocks;
         this.numOfInvalidBlocks = invalidBlocks.size();
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -33,6 +38,7 @@ public class UnableToScheduleException extends Exception {
         this.invalidBlocks = new ArrayList<>();
         invalidBlocks.add(invalidBlock);
         this.numOfInvalidBlocks = invalidBlocks.size();
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -44,6 +50,7 @@ public class UnableToScheduleException extends Exception {
         this.invalidBlocks = invalidBlocks;
         this.numOfInvalidBlocks = invalidBlocks.size();
         this.invalidTimeChunk = invalidTimeChunk;
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -56,6 +63,7 @@ public class UnableToScheduleException extends Exception {
         invalidBlocks.add(invalidBlock);
         this.numOfInvalidBlocks = invalidBlocks.size();
         this.invalidTimeChunk = invalidTimeChunk;
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -67,6 +75,7 @@ public class UnableToScheduleException extends Exception {
         this.invalidBlocks = invalidBlocks;
         this.numOfInvalidBlocks = invalidBlocks.size();
         this.conflictingChunks = conflictingChunks;
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -79,6 +88,7 @@ public class UnableToScheduleException extends Exception {
         invalidBlocks.add(invalidBlock);
         this.numOfInvalidBlocks = invalidBlocks.size();
         this.conflictingChunks = conflictingChunks;
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -93,6 +103,7 @@ public class UnableToScheduleException extends Exception {
         this.numOfInvalidBlocks = invalidBlocks.size();
         this.conflictingChunks = conflictingChunks;
         this.invalidTimeChunk = invalidChunk;
+        logger.info("Constructor created successfully for error.");
     }
 
     /**
@@ -147,6 +158,7 @@ public class UnableToScheduleException extends Exception {
                 returnable += t.getStartTime() + "" + "" + t.getEndTime();
             }
         }
+        logger.info("ToString in UnableToScheduleException worked.");
         return returnable;
     }
 }

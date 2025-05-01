@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.logging.Logger;
+
 /**
  * This is the CreateSchedulePage class.
  * It generates the GUI for the user to input their own schedule, including recurring events.
@@ -18,11 +20,17 @@ import java.util.Set;
  * @author Team
  */
 public class CreateSchedulePage extends Application {
+
+    private static final Logger logger = Logger.getLogger("CreateSchedulePage");
+
     private String scheduleName = null;
     private boolean firstRun;
 
     @Override
     public void start(Stage primaryStage) {
+
+        logger.info("Starting GUI.");
+
         firstRun = true;
         primaryStage.setTitle("Create a New Schedule");
 
@@ -31,11 +39,14 @@ public class CreateSchedulePage extends Application {
         TextField eventDescriptionTextBox = new TextField("Enter Event Description");
 
         // One-time Day selection (for non-recurring)
+        
         ComboBox<String> dayComboBox = new ComboBox<>();
         for (DaysOfTheWeek d : DaysOfTheWeek.values()) {
             dayComboBox.getItems().add(d.name());
         }
         dayComboBox.setPromptText("Choose Day");
+
+        logger.info("Successfully created comboboxes.");
 
         // Recurring toggle + checkboxes
         CheckBox isRecurringCheckBox = new CheckBox("Is this a recurring event?");
@@ -48,6 +59,8 @@ public class CreateSchedulePage extends Application {
         }
         dayCheckBoxes.setDisable(true);
 
+        logger.info("Sucessfully created DayCheckBoxes");
+
         isRecurringCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
             dayCheckBoxes.setDisable(!newVal);
             dayComboBox.setDisable(newVal);
@@ -59,6 +72,8 @@ public class CreateSchedulePage extends Application {
         TextField hourTextBoxB = new TextField("End Hour (24hr)");
         TextField minuteTextBoxB = new TextField("End Minute");
 
+        logger.info("Created TextFields for time.");
+
         // Label dropdown
         ArrayList<String> labelStrings = new ArrayList<>();
         for (Label l : Label.values()) {
@@ -68,10 +83,14 @@ public class CreateSchedulePage extends Application {
         labelComboBox.getItems().addAll(labelStrings);
         labelComboBox.setPromptText("Choose Label");
 
+        logger.info("Created Label Box with dropdowns.");
+
         // Error messages
         TextArea errorTextArea = new TextArea();
         errorTextArea.setEditable(false);
         errorTextArea.setWrapText(true);
+
+        logger.info("Created error textarea.");
 
         // Add Event Button
         Button addEventButton = new Button("Add Event");
@@ -119,6 +138,7 @@ public class CreateSchedulePage extends Application {
                 } else {
                     localStartTime = LocalTime.parse((hourTextBoxA.getText()) + ":" + minuteTextBoxA.getText());
                 }
+                logger.info("Fetched the starting hour.");
                 if (hourTextBoxB.getText().length() == 1) {
                     if (minuteTextBoxB.getText().length() == 1) {
                         localEndTime = LocalTime.parse("0" + hourTextBoxB.getText() + ":" + "0" + minuteTextBoxB.getText());
@@ -128,6 +148,7 @@ public class CreateSchedulePage extends Application {
                 } else {
                     localEndTime = LocalTime.parse((hourTextBoxB.getText()) + ":" + minuteTextBoxB.getText());
                 }
+                logger.info("Fetched the ending hour.");
                 TimeChunk eventChunk = new TimeChunk(localStartTime, localEndTime);
 
                 if (isRecurringCheckBox.isSelected()) {
@@ -157,8 +178,10 @@ public class CreateSchedulePage extends Application {
                     TimeHandler.addToTimeBlock(eventChunk, event, Schedule.scheduleMap.get(enumDay));
                 }
             } catch (UnableToScheduleException ex) {
+                logger.warning("Scheduling error found.");
                 errorTextArea.appendText("Scheduling error: " + ex.toString() + "\n");
             } catch (Exception ex) {
+                logger.warning("Non-scheduling error found.");
                 errorTextArea.appendText("Error: " + ex.getMessage() + "\n");
             }
 

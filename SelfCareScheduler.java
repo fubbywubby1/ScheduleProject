@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import java.util.logging.Logger;
+
 /**
  * This class holds a static hashmap of events to recommend for a certain stresslevel
  * which is given by the GUI
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 public class SelfCareScheduler {
     //This is private and static so it cannot be altered
     private static Map<Predicate<Double>, List<Event>> stressToEvents = new HashMap<>();
+
+    private static final Logger logger = Logger.getLogger("SelfCareScheduler");
 
     static {
         stressToEvents.put(
@@ -53,6 +57,7 @@ public class SelfCareScheduler {
                     new Event("Go for a walk", "Take your dog too.", Label.SELFCARE, false),
                     new Event("Rest and Reflect", "Just...think about it", Label.SELFCARE, false))
         );
+        logger.info("Initialized and instantiated stressToEvents hashmap.");
         }
 
         /**
@@ -68,10 +73,14 @@ public class SelfCareScheduler {
             }
             StressAVG = StressAVG / stressLevels.size();
             List<Event> activitiesToTest = recommendActivities(StressAVG);
+            logger.info("Found recommendedactivities");
             activitiesToTest = testActivities(activitiesToTest);
+            logger.info("Tested activities.");
+
             if (activitiesToTest.isEmpty()) {
-                System.out.println("Every event was able to be placed in");
+                logger.info("Every event was successfully placed.");
             } else {
+                logger.info("Not every event was successfully placed.");
                 List<TimeBlockable> activitiesToBlocks = new ArrayList<>();
                 activitiesToTest.forEach(a -> activitiesToBlocks.add(a));
                 throw new UnableToScheduleException(activitiesToBlocks);
@@ -143,8 +152,10 @@ public class SelfCareScheduler {
                                 eventCounts.put(testEvent, timesScheduled + 1);
                                 eventScheduledDays.computeIfAbsent(testEvent, k -> new ArrayList<>()).add(day);
                                 scheduled = true;
+                                logger.info("Successfully placed event.");
                                 break;
                             } catch (UnableToScheduleException e) {
+                                logger.info("Unsuccessfully placed event.");
                                 // ignore if we can't schedule
                             }
                         }
@@ -181,10 +192,10 @@ public class SelfCareScheduler {
                                                   Map<Event, List<DaysOfTheWeek>> eventScheduledDays) {
             List<DaysOfTheWeek> scheduledDays = eventScheduledDays.getOrDefault(event, new ArrayList<>());
             if (scheduledDays.isEmpty()) {
-                return false; // No prior days, no conflict
+                return false;
             }
         
-            // Get the last scheduled day of the event and check if it's consecutive to current day
+            // Get the last scheduled day of the event and check if it's consecutive to the current day
             DaysOfTheWeek lastScheduled = scheduledDays.get(scheduledDays.size() - 1);
             return Math.abs(lastScheduled.ordinal() - currentDay.ordinal()) == 1;
         }

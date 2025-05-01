@@ -1,4 +1,6 @@
 import java.io.Serializable;
+
+import java.util.logging.Logger;
 /**
  * An abstract class that details what can be put in a schedule.
  * 
@@ -7,6 +9,8 @@ import java.io.Serializable;
 abstract class TimeBlockable implements Serializable {
     private String name;
     private String description;
+
+    private static final Logger logger = Logger.getLogger("TimeBlockable");
 
     /**
      * Initializes instance vars
@@ -41,6 +45,8 @@ abstract class TimeBlockable implements Serializable {
     public void setName(String name) {
         if (name != null) {
             this.name = name;
+        } else {
+            logger.warning("Null name.");
         }
     }
 
@@ -51,6 +57,8 @@ abstract class TimeBlockable implements Serializable {
     public void setDescription(String description) {
         if (description != null) {
             this.description = description;
+        } else {
+            logger.warning("Null description.");
         }
     }
 

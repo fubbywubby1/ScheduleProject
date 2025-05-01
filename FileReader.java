@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Set;
 
+import java.util.logging.Logger;
+
 /**
  * Handles File I/O for Schedule by saving and loading the class contents
  * Serializes Schedules into transferable files
@@ -16,12 +18,15 @@ import java.util.Set;
     private static final String FOLDER_NAME = "schedules"; // Folder for storing serialized files
     private static HashMap<String, File> files = new HashMap<>();
 
+    private static final Logger logger = Logger.getLogger("FileReader");
+
     // Initialize the folder where the files will be saved
     static {
         File dir = new File(FOLDER_NAME);
         if (!dir.exists()) {
             dir.mkdir(); // Create the folder if it doesn't exist
         }
+        logger.info("Created folder to store schedule.");
     }
 
     // Scan the schedules folder for .ser files and populate the files map
@@ -34,6 +39,7 @@ import java.util.Set;
                 files.put(name, f);
             }
         }
+        logger.info("Initialized the File list.");
     }
 
     public static Set<String> getSavedScheduleNames() {
@@ -47,6 +53,7 @@ import java.util.Set;
             File folder = new File(FOLDER_NAME);
             if (!folder.exists()) {
                 folder.mkdir();
+                logger.info("Made directory.");
             }
 
             // Construct the file path inside the schedules folder
@@ -61,8 +68,10 @@ import java.util.Set;
             out.writeObject(Schedule.scheduleMap);
             out.close();
             output.close();
+            logger.info("Successfully saved the schedule.");
             return true;
         } catch (IOException e) {
+            logger.warning("Could not save the schedule.");
             e.printStackTrace();
             return false;
         }
@@ -82,8 +91,10 @@ import java.util.Set;
              ObjectInputStream in = new ObjectInputStream(input)) {
     
             Schedule.scheduleMap = (HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>) in.readObject();
+            logger.info("Loaded the schedule.");
             return true;
         } catch (ClassNotFoundException e) {
+            logger.warning("Failed to load schedule");
             e.printStackTrace();  // Handle the ClassNotFoundException
             return false;
         }

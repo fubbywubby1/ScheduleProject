@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import java.util.logging.Logger;
 /*
  * SchedulePage.java
  * This class creates a schedule page for a week.
@@ -27,6 +29,8 @@ public class SchedulePage extends Application {
 
     private static final int START_HOUR = 0;
     private static final int END_HOUR = 24;
+
+    private static final Logger logger = Logger.getLogger("SchedulePage");
 
     @Override
     public void start(Stage primaryStage) {
@@ -46,6 +50,7 @@ public class SchedulePage extends Application {
             dayLabel.setMaxWidth(Double.MAX_VALUE);
             calendarGrid.add(dayLabel, i + 1, 0); // +1 because column 0 is time
         }
+        logger.info("Created header row.");
 
         // Time column and empty cells
         for (int hour = START_HOUR; hour <= END_HOUR; hour++) {
@@ -60,6 +65,7 @@ public class SchedulePage extends Application {
                 calendarGrid.add(cell, day + 1, hour - START_HOUR + 1);
             }
         }
+        logger.info("Created time column with empty cells.");
 
         // Populate cells with events from Schedule class
         HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> schedule = Schedule.scheduleMap;
@@ -112,6 +118,7 @@ public class SchedulePage extends Application {
 
                     // Add the cell to the grid
                     calendarGrid.add(cell, dayIndex, row);
+                    logger.info("Successfully added event in calendarGrid");
                 }
             }
         }
@@ -129,11 +136,13 @@ public class SchedulePage extends Application {
                 showMessage("Failed to save schedule.");
             }
         });
+        logger.info("Created savebutton");
 
         // Create a layout for the schedule page with Save button
         VBox layout = new VBox(15, new Label("Your Schedule"), calendarGrid, saveButton);
         layout.setPadding(new Insets(25));
         layout.setStyle("-fx-background-color: #ffe6f0;");
+        logger.info("Created layout.");
 
         // Wrap the entire layout in a ScrollPane
         ScrollPane scrollPane = new ScrollPane();

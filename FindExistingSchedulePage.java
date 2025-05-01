@@ -9,7 +9,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Set;
 
+import java.util.logging.Logger;
+
 public class FindExistingSchedulePage extends Application {
+
+    private static final Logger logger = Logger.getLogger("FindExistingSchedulePage");
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Choose Existing Schedule");
@@ -27,6 +32,7 @@ public class FindExistingSchedulePage extends Application {
 
         Label messageLabel = new Label();
         messageLabel.setStyle("-fx-text-fill: red;");
+        logger.info("Created scheduleComboBox and Label");
 
         Button loadButton = new Button("Load Schedule");
         loadButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px; -fx-background-color: #f4b6c2; -fx-text-fill: white; -fx-background-radius: 8;");
@@ -42,10 +48,13 @@ public class FindExistingSchedulePage extends Application {
                 if (success) {
                     Schedule.setName(selectedName);
                     ScheduleGUI.startSchedulePage(primaryStage);
+                    logger.info("Loaded schedule.");
                 } else {
+                    logger.warning("Couldn't load schedule.");
                     messageLabel.setText("Failed to load schedule.");
                 }
             } catch (IOException ex) {
+                logger.warning("Could not load schedule.");
                 messageLabel.setText("Error loading schedule: " + ex.getMessage());
             }
         });

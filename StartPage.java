@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.logging.Logger;
+
 /*
  * StartPage.java
  * This creates the start page for the application, which
@@ -14,6 +16,9 @@ import javafx.stage.Stage;
  */
 public class StartPage extends Application {
     boolean existingSchedule;
+
+    private static final Logger logger = Logger.getLogger("StartPage");
+
     @Override
     /**
      * This method creates the start page for the application.
@@ -59,6 +64,7 @@ public class StartPage extends Application {
         Scene scene = new Scene(layout, 400, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
+        logger.info("Succssfully started startpage.");
     }
 
     public static void main(String[] args) {

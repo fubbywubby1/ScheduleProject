@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.time.LocalTime;
 
+import java.util.logging.Logger;
+
 /**
  * This class is composed of static methods that can universally be used to 
  * alter and deal with TimeChunks and TimeBlockables together.
@@ -11,6 +13,9 @@ import java.time.LocalTime;
  * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
  */
 public class TimeHandler {
+
+    private static final Logger logger = Logger.getLogger("TimeHandler");
+
     /**
      * This method intakes the TimeChunk, TimeBlockable and HashMap that they are to be added to
      * and tests to ensure that under all circumstances they can be put in that hashmap
@@ -23,10 +28,13 @@ public class TimeHandler {
     public static void addToTimeBlock(TimeChunk key, TimeBlockable value, HashMap<TimeChunk, TimeBlockable> timeBlocks) throws UnableToScheduleException {
         if (!((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
         && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN)))  {
+            logger.warning("Starttime or/and endtime are out of bounds");
             throw new UnableToScheduleException(value, key);
         } else if (value.equals(null)) {
+            logger.warning("Value is null");
             throw new UnableToScheduleException(value, key);
         } else if (!(checkNoTimeConflict(key, timeBlocks).isEmpty())) {
+            logger.warning("Time conflict found");
             throw new UnableToScheduleException(value, key, checkNoTimeConflict(key, timeBlocks));
         } else {
             timeBlocks.put(key, value);
@@ -41,6 +49,7 @@ public class TimeHandler {
      */
     public static void removeTimeBlockByEvent(Event value, HashMap<TimeChunk, Event> timeBlocks) throws UnableToScheduleException {
         if (value.equals(null)) {
+            logger.warning("Null value.");
             throw new UnableToScheduleException(value);
         } else {
             for (TimeChunk key: timeBlocks.keySet()) {

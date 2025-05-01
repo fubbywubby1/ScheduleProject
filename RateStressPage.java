@@ -8,6 +8,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
+import java.util.logging.Logger;
+
 /**
  * This is the RateStressPage class.
  * It generates the GUI for the user to rate their stress levels.
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 public class RateStressPage extends Application {
     static ArrayList<Integer> stressLevels = new ArrayList<>();
     public int averageStress = 0;
+
+    private static final Logger logger = Logger.getLogger("RateStressPage");
 
     @Override
     public void start(Stage primaryStage) {
@@ -63,7 +67,9 @@ public class RateStressPage extends Application {
             try {
         SelfCareScheduler scheduler = new SelfCareScheduler();
         scheduler.scheduleSelfCareActivities(stressLevels);
+        logger.info("Scheduled SelfCare Activites");
         } catch (Exception ex) {
+            logger.warning("Could not schedule selfcare activities");
         ex.printStackTrace();
     }
 
