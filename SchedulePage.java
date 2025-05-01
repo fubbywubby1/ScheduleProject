@@ -64,6 +64,16 @@ public class SchedulePage extends Application {
         // Populate cells with events from Schedule class
         HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> schedule = Schedule.scheduleMap;
 
+        System.out.println("Schedule Map Contents: ");
+        for (DaysOfTheWeek day : schedule.keySet()) {
+            HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
+            System.out.println("Day: " + day);
+            for (TimeChunk timeChunk : events.keySet()) {
+                TimeBlockable event = events.get(timeChunk);
+                System.out.println("  Event: " + event.getName() + " at " + timeChunk.getStartTime());
+            }
+        }
+
         for (DaysOfTheWeek day : schedule.keySet()) {
             HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
             for (TimeChunk timeChunk : events.keySet()) {
