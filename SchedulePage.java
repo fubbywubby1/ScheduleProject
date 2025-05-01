@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.util.Arrays;
@@ -92,7 +93,10 @@ public class SchedulePage extends Application {
                     if (timeBlock instanceof Event) {
                         Event event = (Event) timeBlock;
                         if (event.getLabel() != null) {
-                            cell.setStyle("-fx-background-color: " + event.getLabel().getColor() + "; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
+                            String eventColor = event.getLabel().getColor();
+                            Region background = new Region();
+                            background.setStyle("-fx-background-color: " + eventColor + ";");
+                            cell.getChildren().add(background); // Set background as the full size of the cell
                         }
                     } else {
                         cell.setStyle("-fx-background-color: #A0A2A1; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
