@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
  */
 public class SelfCareScheduler {
-    //This is private and static so it cannot be altered whatsoever
+    //This is private and static so it cannot be altered
     private static Map<Predicate<Double>, List<Event>> stressToEvents = new HashMap<>();
 
     static {
