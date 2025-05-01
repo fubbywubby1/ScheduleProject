@@ -1,21 +1,27 @@
+import javafx.application.Application;
 import javafx.stage.Stage;
-
 /**
  * This is the ScheduleGUI class.
  * It is the main class for the application.
  * It launches the application and creates the GUIs for the user to interact with.
  * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
  */
-public class ScheduleGUI {
+public class ScheduleGUI extends Application{
     /**
      * This is the main method.
      * It launches the application and creates the StartPage.
      * @param args
      */
     public static void main(String[] args) {
-        // Launch the application
+        // Launch the JavaFX application
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        // Start the application with the StartPage
         StartPage startPage = new StartPage();
-        startPage.start(new Stage());
+        startPage.start(primaryStage);
     }
 
     /**
