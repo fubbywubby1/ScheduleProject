@@ -133,7 +133,10 @@ public class UnableToScheduleException extends Exception {
     public String toString() {
         String returnable = "";
         if (invalidBlocks != null) {
-            returnable += "Invalid Event(s): " + invalidBlocks.toString() + "\n";
+            returnable += "Invalid Event(s): ";
+            for (TimeBlockable t: invalidBlocks) {
+                returnable += t.getName();
+            }
         }
         if (invalidTimeChunk != null) {
             returnable += "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n";
