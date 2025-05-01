@@ -1,6 +1,7 @@
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -98,30 +99,40 @@ public class SelfCareScheduler {
          * @return a List<Event>, if its empty, everything was successful
          * @throws UnableToScheduleException if we cannot apply all events to the user's schedule
          */
-        private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException{          
+        private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException {
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule = Schedule.getTestSchedule();
-            for (Event testEvent: activitiesToTest) {
-                for (DaysOfTheWeek key: testSchedule.keySet()) {
-                    for (int k = 8; k < 22; k++) {
-                        TimeChunk testChunk = new TimeChunk(LocalTime.of(k, 0), LocalTime.of(k + 1, 0));
-                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(key)).isEmpty()) {
+            List<Event> unscheduled = new ArrayList<>(activitiesToTest);
+        
+            Iterator<Event> iterator = unscheduled.iterator();
+            while (iterator.hasNext()) {
+                Event testEvent = iterator.next();
+                boolean scheduled = false;
+        
+                for (DaysOfTheWeek day : testSchedule.keySet()) {
+                    for (int hour = 8; hour < 22; hour++) {
+                        TimeChunk testChunk = new TimeChunk(LocalTime.of(hour, 0), LocalTime.of(hour + 1, 0));
+                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(day)).isEmpty()) {
                             try {
-                            TimeHandler.addToTimeBlock(testChunk, testEvent, testSchedule.get(key));
+                                TimeHandler.addToTimeBlock(testChunk, testEvent, testSchedule.get(day));
+                                Schedule.add(testChunk, testEvent, day);
+                                scheduled = true;
+                                break; // Found a time for this event, stop looking
                             } catch (UnableToScheduleException e) {
-                                break;
+                                // continue trying other times
                             }
-                            Schedule.add(testChunk, testEvent, key);
-                            System.out.println("Event was added successfully");
-                            activitiesToTest.remove(testEvent);
-                            break;
                         }
                     }
-                    break;
+                    if (scheduled) break; // stop trying other days if scheduled
                 }
-                break;
+        
+                if (scheduled) {
+                    iterator.remove(); // safe removal
+                }
             }
-            return activitiesToTest;
+        
+            return unscheduled; // return list of events that could not be scheduled
         }
+        
 
         /**
          * Using a stream, this removes the largest value of a HashMap
