@@ -16,7 +16,7 @@ public class Schedule implements Serializable {
 
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>();
     private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testScheduleMap;
-    private static String name = "name";;
+    private static String name = "name";
 
     static {
         scheduleMap.put(DaysOfTheWeek.Sunday, new HashMap<>());

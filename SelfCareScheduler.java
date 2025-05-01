@@ -110,75 +110,63 @@ public class SelfCareScheduler {
          */
         private List<Event> testActivities(List<Event> activitiesToTest) throws UnableToScheduleException {
             HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testSchedule = Schedule.getTestSchedule();
-            List<Event> unscheduled = new ArrayList<>(activitiesToTest);
-        
-            // Track how many times each event has been scheduled
             Map<Event, Integer> eventCounts = new HashMap<>();
-            // Track the days each event has been scheduled on, to avoid scheduling them on consecutive days
             Map<Event, List<DaysOfTheWeek>> eventScheduledDays = new HashMap<>();
+            
+            int maxIterations = 10;
+            boolean progressMade;
         
-            Iterator<Event> iterator = unscheduled.iterator();
-            while (iterator.hasNext()) {
-                Event testEvent = iterator.next();
-                int timesScheduled = eventCounts.getOrDefault(testEvent, 0);
+            for (int iteration = 0; iteration < maxIterations; iteration++) {
+                progressMade = false;
         
-                if (timesScheduled >= 2) {
-                    // This event already scheduled twice
-                    continue;
-                }
+                for (Event testEvent : activitiesToTest) {
+                    int scheduledCount = eventCounts.getOrDefault(testEvent, 0);
+                    if (scheduledCount >= 2) continue;
         
-                boolean scheduled = false;
+                    for (DaysOfTheWeek day : DaysOfTheWeek.values()) {
+                        if (eventScheduledDays.getOrDefault(testEvent, new ArrayList<>()).contains(day) ||
+                            hasConsecutiveDayConflict(testEvent, day, eventScheduledDays)) {
+                            continue;
+                        }
         
-                // Find available days with gaps
-                for (DaysOfTheWeek day : testSchedule.keySet()) {
-                    // Skip if event was scheduled already or has consecutive day issue
-                    if (eventCounts.getOrDefault(testEvent, 0) >= 2 || 
-                        eventScheduledDays.getOrDefault(testEvent, new ArrayList<>()).contains(day) ||
-                        hasConsecutiveDayConflict(testEvent, day, eventScheduledDays)) {
-                        continue;
-                    }
-        
-                    HashMap<TimeChunk, TimeBlockable> daySchedule = testSchedule.get(day);
-        
-                    for (int hour = 8; hour < 22; hour++) {
-                        TimeChunk testChunk = new TimeChunk(LocalTime.of(hour, 0), LocalTime.of(hour + 1, 0));
-        
-                        if (TimeHandler.checkNoTimeConflict(testChunk, daySchedule).isEmpty()) {
-                            try {
-                                TimeHandler.addToTimeBlock(testChunk, testEvent, daySchedule);
-                                daySchedule.put(testChunk, testEvent);
-        
-                                // Update event count and record scheduled day
-                                eventCounts.put(testEvent, timesScheduled + 1);
-                                eventScheduledDays.computeIfAbsent(testEvent, k -> new ArrayList<>()).add(day);
-                                scheduled = true;
-                                logger.info("Successfully placed event.");
-                                break;
-                            } catch (UnableToScheduleException e) {
-                                logger.info("Unsuccessfully placed event.");
-                                // ignore if we can't schedule
+                        HashMap<TimeChunk, TimeBlockable> daySchedule = testSchedule.get(day);
+                        for (int hour = 8; hour < 22; hour++) {
+                            TimeChunk chunk = new TimeChunk(LocalTime.of(hour, 0), LocalTime.of(hour + 1, 0));
+                            if (TimeHandler.checkNoTimeConflict(chunk, daySchedule).isEmpty()) {
+                                try {
+                                    TimeHandler.addToTimeBlock(chunk, testEvent, daySchedule);
+                                    daySchedule.put(chunk, testEvent);
+                                    eventCounts.put(testEvent, scheduledCount + 1);
+                                    eventScheduledDays.computeIfAbsent(testEvent, k -> new ArrayList<>()).add(day);
+                                    logger.info("Scheduled " + testEvent.getName() + " on " + day);
+                                    progressMade = true;
+                                    break;
+                                } catch (UnableToScheduleException e) {
+                                    logger.warning("Failed to schedule " + testEvent.getName() + " on " + day);
+                                }
                             }
                         }
+        
+                        if (eventCounts.get(testEvent) >= 2) break;
                     }
-        
-                    if (scheduled) break;
                 }
         
-                // If scheduled, remove from unscheduled list
-                if (scheduled) {
-                    iterator.remove();
-                }
+                if (!progressMade) break;
             }
         
-            // Apply scheduled events to the main schedule
+            // Apply to real schedule
             for (DaysOfTheWeek day : testSchedule.keySet()) {
                 for (Map.Entry<TimeChunk, TimeBlockable> entry : testSchedule.get(day).entrySet()) {
                     Schedule.add(entry.getKey(), entry.getValue(), day);
                 }
             }
         
-            return unscheduled;
+            // Return those not scheduled fully
+            return activitiesToTest.stream()
+                .filter(e -> eventCounts.getOrDefault(e, 0) < 2)
+                .collect(Collectors.toList());
         }
+        
         
         /**
          * A simple method that checks if placing an event 
