@@ -93,7 +93,11 @@ public class RateStressPage extends Application {
 
             // pass this information to the Self Care scheduler.
             SelfCareScheduler scheduler = new SelfCareScheduler();
-            scheduler.scheduleSelfCareActivities(stressLevels);
+            try {
+                scheduler.scheduleSelfCareActivities(stressLevels);
+            } catch (Exception f) {
+                f.printStackTrace();
+            }
         });
         // add the button to the grid
         grid.add(submitButton, 0, 5, 2, 1);
