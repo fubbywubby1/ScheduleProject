@@ -69,6 +69,8 @@ public class RateStressPage extends Application {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+        ScheduleGUI.startSchedulePage(primaryStage);
         });
 
         grid.add(submitButton, 0, labels.length, 2, 1);

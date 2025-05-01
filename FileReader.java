@@ -81,9 +81,4 @@ public class FileReader {
         }
     }
 
-    /*
-    public static boolean generateTextFile() {
-
-    }
-    */
 }
