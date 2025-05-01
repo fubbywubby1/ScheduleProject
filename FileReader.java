@@ -13,11 +13,20 @@ import java.util.Set;
  */
 
  public class FileReader {
+    private static final String FOLDER_NAME = "schedules"; // Folder for storing serialized files
     private static HashMap<String, File> files = new HashMap<>();
 
-    // Scan the current directory for .ser files and populate files map
+    // Initialize the folder where the files will be saved
+    static {
+        File dir = new File(FOLDER_NAME);
+        if (!dir.exists()) {
+            dir.mkdir(); // Create the folder if it doesn't exist
+        }
+    }
+
+    // Scan the schedules folder for .ser files and populate the files map
     public static void initializeFileList() {
-        File dir = new File(".");
+        File dir = new File(FOLDER_NAME);
         File[] serFiles = dir.listFiles((d, name) -> name.endsWith(".ser"));
         if (serFiles != null) {
             for (File f : serFiles) {
@@ -31,9 +40,20 @@ import java.util.Set;
         return files.keySet();
     }
 
+    // Save the schedule to the "schedules" folder with a given name
     public static boolean saveAs(String name) {
         try {
-            File file = files.containsKey(name) ? files.get(name) : new File(name + ".ser");
+            // Ensure the folder is created
+            File folder = new File(FOLDER_NAME);
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            // Construct the file path inside the schedules folder
+            File file = files.containsKey(name) 
+                    ? files.get(name) 
+                    : new File(FOLDER_NAME + File.separator + name + ".ser");
+
             files.put(name, file);
 
             FileOutputStream output = new FileOutputStream(file);
@@ -42,7 +62,8 @@ import java.util.Set;
             out.close();
             output.close();
             return true;
-        } catch(IOException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -51,8 +72,11 @@ import java.util.Set;
         return saveAs(Schedule.getName());
     }
 
+    // Load a schedule from the "schedules" folder
     public static boolean load(String name) throws IOException {
-        if(!files.containsKey(name)) return false;
+        if (!files.containsKey(name)) return false;
+        
+        // Construct the file path from the schedules folder
         File file = files.get(name);
 
         FileInputStream input = new FileInputStream(file);
@@ -63,7 +87,7 @@ import java.util.Set;
             in.close();
             input.close();
             return true;
-        } catch(ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             in.close();
             input.close();
@@ -71,3 +95,4 @@ import java.util.Set;
         }
     }
 }
+
