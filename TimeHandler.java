@@ -65,13 +65,9 @@ public class TimeHandler {
      * @return the List of elements to check
      */
     public static List<TimeChunk> checkNoTimeConflict(TimeChunk checkTimeChunk, HashMap<TimeChunk, TimeBlockable> timeBlocks) {
-        Set<TimeChunk> set = timeBlocks.keySet();
-        List<TimeChunk> toCheck = set.stream().filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()))
-                                             .filter(t -> checkTimeChunk.getEndTime().isAfter(t.getStartTime()))
-                                             .filter(t -> checkTimeChunk.getStartTime().isAfter(t.getStartTime()) 
-                                                          || checkTimeChunk.getEndTime().isBefore(t.getEndTime()))
-                                             .collect(Collectors.toList());
-        return toCheck;
+        return timeBlocks.keySet().stream()
+            .filter(t -> checkTimeChunk.getStartTime().isBefore(t.getEndTime()) && 
+                         checkTimeChunk.getEndTime().isAfter(t.getStartTime()))
+            .collect(Collectors.toList());
     }
-    
 }
