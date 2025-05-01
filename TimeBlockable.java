@@ -1,9 +1,10 @@
+import java.io.Serializable;
 /**
  * An abstract class that details what can be put in a schedule.
  * 
  * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
  */
-abstract class TimeBlockable {
+abstract class TimeBlockable implements Serializable {
     private String name;
     private String description;
 

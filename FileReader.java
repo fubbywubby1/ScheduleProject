@@ -76,21 +76,15 @@ import java.util.Set;
     public static boolean load(String name) throws IOException {
         if (!files.containsKey(name)) return false;
         
-        // Construct the file path from the schedules folder
         File file = files.get(name);
-
-        FileInputStream input = new FileInputStream(file);
-        ObjectInputStream in = new ObjectInputStream(input);
-
-        try {
-            Schedule.scheduleMap = (HashMap) in.readObject();
-            in.close();
-            input.close();
+        
+        try (FileInputStream input = new FileInputStream(file);
+             ObjectInputStream in = new ObjectInputStream(input)) {
+    
+            Schedule.scheduleMap = (HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>) in.readObject();
             return true;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            in.close();
-            input.close();
+            e.printStackTrace();  // Handle the ClassNotFoundException
             return false;
         }
     }
