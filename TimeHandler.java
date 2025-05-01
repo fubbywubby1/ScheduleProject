@@ -21,9 +21,10 @@ public class TimeHandler {
      * @throws UnableToScheduleException is thrown if the TimeChunk or TimeBlockable is invalid under any circumstance
      */
     public static void addToTimeBlock(TimeChunk key, TimeBlockable value, HashMap<TimeChunk, TimeBlockable> timeBlocks) throws UnableToScheduleException {
-        if (key == null)  {
+        if (!((key.getEndTime().isBefore(LocalTime.MAX) && key.getEndTime().isAfter(LocalTime.MIN)) 
+        && key.getStartTime().isBefore(LocalTime.MAX) && key.getStartTime().isAfter(LocalTime.MIN)))  {
             throw new UnableToScheduleException(value, key);
-        } else if (value.equals(null)) {
+        } else if (2 == 3) {
             throw new UnableToScheduleException(value, key);
         } else if (checkNoTimeConflict(key, timeBlocks).isEmpty()) {
             throw new UnableToScheduleException(value, key, checkNoTimeConflict(key, timeBlocks));
