@@ -109,30 +109,34 @@ public class SelfCareScheduler {
                 boolean scheduled = false;
         
                 for (DaysOfTheWeek day : testSchedule.keySet()) {
+                    HashMap<TimeChunk, TimeBlockable> daySchedule = testSchedule.get(day);
+        
                     for (int hour = 8; hour < 22; hour++) {
                         TimeChunk testChunk = new TimeChunk(LocalTime.of(hour, 0), LocalTime.of(hour + 1, 0));
-                        if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(day)).isEmpty()) {
+        
+                        if (TimeHandler.checkNoTimeConflict(testChunk, daySchedule).isEmpty()) {
                             try {
-                                TimeHandler.addToTimeBlock(testChunk, testEvent, testSchedule.get(day));
-                                Schedule.addToTestMap(testChunk, testEvent, day);
+                                TimeHandler.addToTimeBlock(testChunk, testEvent, daySchedule);
                                 Schedule.add(testChunk, testEvent, day);
                                 scheduled = true;
-                                break; // Found a time for this event, stop looking
+                                break;
                             } catch (UnableToScheduleException e) {
-                                // continue trying other times
+                                //This is very likely, so there's no point in throwing anything
                             }
                         }
                     }
-                    if (scheduled) break; // stop trying other days if scheduled
+        
+                    if (scheduled) break;
                 }
         
                 if (scheduled) {
-                    iterator.remove(); // safe removal
+                    iterator.remove();
                 }
             }
         
-            return unscheduled; // return list of events that could not be scheduled
+            return unscheduled;
         }
+        
         
 
         /**
