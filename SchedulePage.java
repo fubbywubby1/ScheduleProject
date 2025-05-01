@@ -93,7 +93,7 @@ public class SchedulePage extends Application {
                         if (event.getLabel() != null) {
                             // Set background color directly on StackPane
                             String eventColor = event.getLabel().getColor();
-                            cell.setStyle("-fx-background-color: " + eventColor + "; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
+                            cell.setStyle(eventColor + "; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
                         }
                     } else {
                         cell.setStyle("-fx-background-color: #A0A2A1; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
