@@ -25,26 +25,12 @@ public class RateStressPage extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Rate Your Stress Levels");
 
-        // Grid layout
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20));
         grid.setVgap(15);
         grid.setHgap(20);
         grid.setStyle("-fx-background-color: #ffe6f0;");
 
-        // Helper method to create styled sliders
-        Slider createStyledSlider() {
-            Slider slider = new Slider(0, 10, 0);
-            slider.setMajorTickUnit(1);
-            slider.setMinorTickCount(0);
-            slider.setShowTickLabels(true);
-            slider.setShowTickMarks(true);
-            slider.setSnapToTicks(true);
-            slider.setStyle("-fx-control-inner-background: #f8d6e0;");
-            return slider;
-        }
-
-        // Sliders and labels
         String[] labels = {
             "How stressful is work?",
             "How stressful is school?",
@@ -64,7 +50,6 @@ public class RateStressPage extends Application {
             grid.add(sliders[i], 1, i);
         }
 
-        // Submit button
         Button submitButton = new Button("Submit");
         submitButton.setStyle(
             "-fx-font-size: 16px; -fx-padding: 10px 20px; " +
@@ -76,6 +61,8 @@ public class RateStressPage extends Application {
                 stressLevels.add((int) s.getValue());
             }
 
+            primaryStage.close();
+
             try {
                 SelfCareScheduler scheduler = new SelfCareScheduler();
                 scheduler.scheduleSelfCareActivities(stressLevels);
@@ -85,10 +72,22 @@ public class RateStressPage extends Application {
         });
 
         grid.add(submitButton, 0, labels.length, 2, 1);
-
-        // Scene and stage setup
         Scene scene = new Scene(grid, 550, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    // 👇 Move this OUTSIDE the start() method
+    private Slider createStyledSlider() {
+        Slider slider = new Slider(0, 10, 0);
+        slider.setMajorTickUnit(1);
+        slider.setMinorTickCount(0);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setSnapToTicks(true);
+        slider.setStyle("-fx-control-inner-background: #f8d6e0;");
+        return slider;
+    }
 }
+
+
