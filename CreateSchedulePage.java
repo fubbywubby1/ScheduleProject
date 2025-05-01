@@ -110,7 +110,7 @@ public class CreateSchedulePage extends Application {
 
                 TimeHandler.addToTimeBlock(eventChunk, event, Schedule.scheduleMap.get(enumDay));
             } catch (UnableToScheduleException ex) {
-                errorTextArea.appendText("Scheduling error: " + ex.getMessage() + "\n");
+                errorTextArea.appendText("Scheduling error: " + ex.toString() + "\n");
             } catch (Exception ex) {
                 errorTextArea.appendText("Error: " + ex.getMessage() + "\n");
             }
