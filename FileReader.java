@@ -2,8 +2,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Set;
 
-import java.util.logging.Logger;
-
 /**
  * Handles File I/O for Schedule by saving and loading the class contents
  * Serializes Schedules into transferable files
@@ -18,15 +16,12 @@ import java.util.logging.Logger;
     private static final String FOLDER_NAME = "schedules"; // Folder for storing serialized files
     private static HashMap<String, File> files = new HashMap<>();
 
-    private static final Logger logger = Logger.getLogger("FileReader");
-
     // Initialize the folder where the files will be saved
     static {
         File dir = new File(FOLDER_NAME);
         if (!dir.exists()) {
             dir.mkdir(); // Create the folder if it doesn't exist
         }
-        logger.info("Created folder to store schedule.");
     }
 
     // Scan the schedules folder for .ser files and populate the files map
@@ -39,42 +34,50 @@ import java.util.logging.Logger;
                 files.put(name, f);
             }
         }
-        logger.info("Initialized the File list.");
     }
 
     public static Set<String> getSavedScheduleNames() {
         return files.keySet();
     }
 
+    private class Save extends Thread {
+
+        public String name;
+
+        public void run() {
+            
+        }
+    }
+
     // Save the schedule to the "schedules" folder with a given name
     public static boolean saveAs(String name) {
-        try {
-            // Ensure the folder is created
-            File folder = new File(FOLDER_NAME);
-            if (!folder.exists()) {
-                folder.mkdir();
-                logger.info("Made directory.");
+        Thread save = new Thread(() -> {
+            try {
+                // Ensure the folder is created
+                File folder = new File(FOLDER_NAME);
+                if (!folder.exists()) {
+                    folder.mkdir();
+                }
+    
+                // Construct the file path inside the schedules folder
+                File file = files.containsKey(name) 
+                        ? files.get(name) 
+                        : new File(FOLDER_NAME + File.separator + name + ".ser");
+    
+                files.put(name, file);
+    
+                FileOutputStream output = new FileOutputStream(file);
+                ObjectOutputStream out = new ObjectOutputStream(output);
+                out.writeObject(Schedule.scheduleMap);
+                out.close();
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            // Construct the file path inside the schedules folder
-            File file = files.containsKey(name) 
-                    ? files.get(name) 
-                    : new File(FOLDER_NAME + File.separator + name + ".ser");
-
-            files.put(name, file);
-
-            FileOutputStream output = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream(output);
-            out.writeObject(Schedule.scheduleMap);
-            out.close();
-            output.close();
-            logger.info("Successfully saved the schedule.");
-            return true;
-        } catch (IOException e) {
-            logger.warning("Could not save the schedule.");
-            e.printStackTrace();
-            return false;
-        }
+        });
+        save.run();
+        return true;
+        
     }
 
     public static boolean save() {
@@ -91,13 +94,13 @@ import java.util.logging.Logger;
              ObjectInputStream in = new ObjectInputStream(input)) {
     
             Schedule.scheduleMap = (HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>) in.readObject();
-            logger.info("Loaded the schedule.");
             return true;
         } catch (ClassNotFoundException e) {
-            logger.warning("Failed to load schedule");
             e.printStackTrace();  // Handle the ClassNotFoundException
             return false;
         }
     }
 }
+
+
 
