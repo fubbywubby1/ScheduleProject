@@ -135,15 +135,17 @@ public class UnableToScheduleException extends Exception {
         if (invalidBlocks != null) {
             returnable += "Invalid Event(s): ";
             for (TimeBlockable t: invalidBlocks) {
-                returnable += t.getName();
+                returnable += t.getName() + "\n";
             }
         }
         if (invalidTimeChunk != null) {
             returnable += "Found at Times: " + invalidTimeChunk.getStartTime().toString() + " to " + invalidTimeChunk.getEndTime().toString() + "\n";
         }
         if (conflictingChunks != null) {
-            returnable += "Conflicts With: " + conflictingChunks.get(0).getStartTime() + " to " + conflictingChunks.get(0).getEndTime() + " and " +
-                conflictingChunks.get(1).getStartTime() + " to " + conflictingChunks.get(1).getEndTime();
+            returnable += "Conflicts With: ";
+            for (TimeChunk t: conflictingChunks) {
+                returnable += t.getStartTime() + "" + "" + t.getEndTime();
+            }
         }
         return returnable;
     }
