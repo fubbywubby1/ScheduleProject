@@ -55,7 +55,7 @@ public class Schedule {
         return name;
     }
 
-    public static void put(TimeChunk newChunk, TimeBlockable newBlock, DaysOfTheWeek day) throws UnableToScheduleException {
+    public static void add(TimeChunk newChunk, TimeBlockable newBlock, DaysOfTheWeek day) throws UnableToScheduleException {
         try {
             TimeHandler.addToTimeBlock(newChunk, newBlock, scheduleMap.get(day));
         } catch (UnableToScheduleException e) {
