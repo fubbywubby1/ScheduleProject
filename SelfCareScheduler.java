@@ -114,6 +114,7 @@ public class SelfCareScheduler {
                                 break;
                             }
                             Schedule.add(testChunk, testEvent, key);
+                            System.out.println("Event was added successfully");
                             activitiesToTest.remove(testEvent);
                             break;
                         }
