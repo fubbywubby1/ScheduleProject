@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Specifically holds the universal static schedule we use for a week. 
@@ -24,20 +25,17 @@ public class Schedule {
     }
 
     /**
-     * sets the testSchedule to the current scehdule
-     */
-    public static void refreshTestSchedule() {
-        testScheduleMap = scheduleMap;
-    }
-
-    /**
      * refreshes the test schedule, then returns it
      * @return testSchedule
      */
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> getTestSchedule() {
-        Schedule.refreshTestSchedule();
-        return testScheduleMap;
+    HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> copy = new HashMap<>();
+    for (Map.Entry<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> entry : scheduleMap.entrySet()) {
+        copy.put(entry.getKey(), new HashMap<>(entry.getValue())); // shallow copy of each day's map
     }
+    return copy;
+}
+
 
     /**
      * sets the name of the schedule
