@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Handles File I/O for Schedule by saving and loading the class contents
@@ -11,25 +12,29 @@ import java.util.HashMap;
  * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
  */
 
-public class FileReader {
+ public class FileReader {
+    private static HashMap<String, File> files = new HashMap<>();
 
-    private static HashMap<String, File> files;
-    
-    /**
-     * Serializes and saves the currently stored Scheduled data under the given name
-     * 
-     * @param schedule
-     * @return True if save is successful, false otherwise
-     */
+    // Scan the current directory for .ser files and populate files map
+    public static void initializeFileList() {
+        File dir = new File(".");
+        File[] serFiles = dir.listFiles((d, name) -> name.endsWith(".ser"));
+        if (serFiles != null) {
+            for (File f : serFiles) {
+                String name = f.getName().replace(".ser", "");
+                files.put(name, f);
+            }
+        }
+    }
+
+    public static Set<String> getSavedScheduleNames() {
+        return files.keySet();
+    }
+
     public static boolean saveAs(String name) {
         try {
-            File file;
-            if(files.containsKey(name)) {
-                file = files.get(name);
-            } else {
-                file = new File(name + ".ser");
-                files.put(name, file);
-            }
+            File file = files.containsKey(name) ? files.get(name) : new File(name + ".ser");
+            files.put(name, file);
 
             FileOutputStream output = new FileOutputStream(file);
             ObjectOutputStream out = new ObjectOutputStream(output);
@@ -42,25 +47,11 @@ public class FileReader {
         }
     }
 
-    /**
-     * Serializes and saves the currently stored Schedule data
-     * 
-     * @param schedule
-     * @throws IOException
-     * @return True if save is successful, false otherwise
-     */
     public static boolean save() {
         return saveAs(Schedule.getName());
     }
 
-    /**
-     * Loads the data stored under the given name into the Schedule class
-     * 
-     * @return
-     * @throws IOException
-     */
-    public static boolean load(String name) throws IOException{
-
+    public static boolean load(String name) throws IOException {
         if(!files.containsKey(name)) return false;
         File file = files.get(name);
 
@@ -68,11 +59,10 @@ public class FileReader {
         ObjectInputStream in = new ObjectInputStream(input);
 
         try {
-            Schedule.scheduleMap = (HashMap)in.readObject();
+            Schedule.scheduleMap = (HashMap) in.readObject();
             in.close();
             input.close();
             return true;
-            
         } catch(ClassNotFoundException e) {
             e.printStackTrace();
             in.close();
@@ -80,5 +70,4 @@ public class FileReader {
             return false;
         }
     }
-
 }
