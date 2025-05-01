@@ -1,12 +1,18 @@
 import java.util.Set;
 
+/*
+*This interface allows implementing classes to specify which days they recur on,
+*and provides methods to check, add, or remove recurrence days.
+*It is designed to work within a one-week scheduling system.
+*
+*/
 interface Reoccurring {
 
-    Set<DaysOfTheWeek> getRecurringDays(); // returns the set of days on which an item repeats
-    void setRecurringDays(Set<DaysOfTheWeek> days); // replaces the currect recurring days with a new set
-    boolean occursOn(DaysOfTheWeek day); // checks whether or not the item is supposed to happen on the given day
-    void addRecurringDay(DaysOfTheWeek day); // adds a single day to the list of recurring days
-    void removeRecurringDay(DaysOfTheWeek day); // removes a single day from the list of recurring days
+    Set<DaysOfTheWeek> getRecurringDays();
+    void setRecurringDays(Set<DaysOfTheWeek> days); 
+    boolean occursOn(DaysOfTheWeek day); 
+    void addRecurringDay(DaysOfTheWeek day);  
+    void removeRecurringDay(DaysOfTheWeek day); 
 
 }
 
