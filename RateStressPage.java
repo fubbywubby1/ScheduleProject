@@ -8,8 +8,16 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
+/**
+ * This is the RateStressPage class.
+ * It generates the GUI for the user to rate their stress levels.
+ * The user can rate their stress levels on a scale of 0 to 10.
+ * When the user clicks the submit button, the stress levels are passed to the Self Care scheduler, which
+ * generates a new schedule with additional self-care activities.
+ * 
+ * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
+ */
 public class RateStressPage extends Application {
-    // one page, and a Slider for each Label.
     static ArrayList<Integer> stressLevels = new ArrayList<>();
     public int averageStress = 0;
 
@@ -84,7 +92,8 @@ public class RateStressPage extends Application {
             primaryStage.close();
 
             // pass this information to the Self Care scheduler.
-            // EMILY DO THIS
+            SelfCareScheduler scheduler = new SelfCareScheduler();
+            scheduler.generateSelfCareSchedule(stressLevels);
         });
         // add the button to the grid
         grid.add(submitButton, 0, 5, 2, 1);
