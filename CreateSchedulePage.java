@@ -111,12 +111,20 @@ public class CreateSchedulePage extends Application {
                 LocalTime localStartTime;
                 LocalTime localEndTime;
                 if (hourTextBoxA.getText().length() == 1) {
-                    localStartTime = LocalTime.parse("0" + hourTextBoxA.getText() + ":" + minuteTextBoxA.getText());
+                    if (minuteTextBoxA.getText().length() == 1) {
+                        localStartTime = LocalTime.parse("0" + hourTextBoxA.getText() + ":" + "0" + minuteTextBoxA.getText());
+                    } else {
+                        localStartTime = LocalTime.parse("0" + hourTextBoxA.getText() + ":" + minuteTextBoxA.getText());
+                    }
                 } else {
                     localStartTime = LocalTime.parse((hourTextBoxA.getText()) + ":" + minuteTextBoxA.getText());
                 }
                 if (hourTextBoxB.getText().length() == 1) {
-                    localEndTime = LocalTime.parse("0" + hourTextBoxB.getText() + ":" + minuteTextBoxB.getText());
+                    if (minuteTextBoxB.getText().length() == 1) {
+                        localEndTime = LocalTime.parse("0" + hourTextBoxB.getText() + ":" + "0" + minuteTextBoxB.getText());
+                    } else {
+                        localEndTime = LocalTime.parse("0" + hourTextBoxB.getText() + ":" + minuteTextBoxB.getText());
+                    }
                 } else {
                     localEndTime = LocalTime.parse((hourTextBoxB.getText()) + ":" + minuteTextBoxB.getText());
                 }
