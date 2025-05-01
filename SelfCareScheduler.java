@@ -114,6 +114,7 @@ public class SelfCareScheduler {
                         if (TimeHandler.checkNoTimeConflict(testChunk, testSchedule.get(day)).isEmpty()) {
                             try {
                                 TimeHandler.addToTimeBlock(testChunk, testEvent, testSchedule.get(day));
+                                Schedule.addToTestMap(testChunk, testEvent, day);
                                 Schedule.add(testChunk, testEvent, day);
                                 scheduled = true;
                                 break; // Found a time for this event, stop looking

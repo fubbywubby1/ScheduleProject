@@ -62,4 +62,12 @@ public class Schedule {
             throw e;
         }
     }
+
+    public static void addToTestMap(TimeChunk newChunk, TimeBlockable newBlock, DaysOfTheWeek day) throws UnableToScheduleException {
+        try {
+            TimeHandler.addToTimeBlock(newChunk, newBlock, testScheduleMap.get(day));
+        } catch (UnableToScheduleException e) {
+            throw e;
+        }
+    }
 }
