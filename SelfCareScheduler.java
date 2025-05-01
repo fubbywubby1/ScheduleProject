@@ -113,6 +113,7 @@ public class SelfCareScheduler {
                             } catch (UnableToScheduleException e) {
                                 break;
                             }
+                            Schedule.add(testChunk, testEvent, key);
                             activitiesToTest.remove(testEvent);
                             break;
                         }
