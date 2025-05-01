@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Specifically holds the universal static schedule we use for a week. 
@@ -7,7 +8,7 @@ import java.util.Map;
  * 
  * @author Alexander Simonson, Emily Schwartz, Douglas Tranz and Molly O'Brien
  */
-public class Schedule {
+public class Schedule implements Serializable {
 
     public static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> scheduleMap = new HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>>();
     private static HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> testScheduleMap;

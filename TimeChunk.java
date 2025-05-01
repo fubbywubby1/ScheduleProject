@@ -1,6 +1,7 @@
 import java.time.LocalTime;
+import java.io.Serializable;
 
-public class TimeChunk {
+public class TimeChunk implements Serializable {
     private LocalTime startTime;
     private LocalTime endTime;
 
