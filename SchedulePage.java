@@ -23,40 +23,36 @@ public class SchedulePage extends Application {
 
     private static final int START_HOUR = 0;
     private static final int END_HOUR = 24;
-    /* Builds the Schedule screen. 
-     * @param primaryStage The primary stage for this application
-     * @param date The date for the schedule
-     */
+
     @Override
-    public void start(Stage primaryStage)
-    {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Your Schedule");
+
+        // Create the main GridPane for the calendar layout
         GridPane calendarGrid = new GridPane();
         calendarGrid.setGridLinesVisible(true);
-        calendarGrid.setPadding(new Insets(10));
-        calendarGrid.setHgap(1);
-        calendarGrid.setVgap(1);
+        calendarGrid.setPadding(new Insets(20));  // Adds padding around the grid
+        calendarGrid.setHgap(10);  // Horizontal gap between cells
+        calendarGrid.setVgap(10);  // Vertical gap between cells
 
         // Header row: Days of the week
         for (int i = 0; i < DAYS.length; i++) {
             Label dayLabel = new Label(DAYS[i]);
-            dayLabel.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
+            dayLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 10px; -fx-background-color: #F6B2D6; -fx-alignment: center;");
             dayLabel.setMaxWidth(Double.MAX_VALUE);
-            dayLabel.setStyle("-fx-background-color:rgb(229, 164, 202); -fx-font-weight: bold; -fx-alignment: center;");
             calendarGrid.add(dayLabel, i + 1, 0); // +1 because column 0 is time
         }
 
         // Time column and empty cells
         for (int hour = START_HOUR; hour <= END_HOUR; hour++) {
             Label timeLabel = new Label(String.format("%02d:00", hour));
-            timeLabel.setPadding(new Insets(5));
-            timeLabel.setStyle("-fx-background-color:rgb(196, 230, 199); -fx-alignment: center;");
-            calendarGrid.add(timeLabel, 0, hour - START_HOUR + 1);
+            timeLabel.setStyle("-fx-font-size: 14px; -fx-padding: 10px; -fx-background-color: #D9E9D2; -fx-alignment: center;");
+            calendarGrid.add(timeLabel, 0, hour - START_HOUR + 1);  // +1 for header row
 
             for (int day = 0; day < DAYS.length; day++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(100, 50);
-                cell.setStyle("-fx-background-color:rgb(200, 222, 205);");
+                cell.setPrefSize(150, 70); // Slightly larger cells for better event visibility
+                cell.setStyle("-fx-background-color: #E4F4E0; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
                 calendarGrid.add(cell, day + 1, hour - START_HOUR + 1);
             }
         }
@@ -64,6 +60,7 @@ public class SchedulePage extends Application {
         // Populate cells with events from Schedule class
         HashMap<DaysOfTheWeek, HashMap<TimeChunk, TimeBlockable>> schedule = Schedule.scheduleMap;
 
+        // Add debug statements to verify scheduleMap content (for now)
         System.out.println("Schedule Map Contents: ");
         for (DaysOfTheWeek day : schedule.keySet()) {
             HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
@@ -74,35 +71,42 @@ public class SchedulePage extends Application {
             }
         }
 
+        // Loop through scheduleMap to place events in the grid
         for (DaysOfTheWeek day : schedule.keySet()) {
             HashMap<TimeChunk, TimeBlockable> events = schedule.get(day);
             for (TimeChunk timeChunk : events.keySet()) {
-                TimeBlockable TimeBlock = events.get(timeChunk);
+                TimeBlockable timeBlock = events.get(timeChunk);
                 int startHour = timeChunk.getStartTime().getHour();
                 int endHour = timeChunk.getEndTime().getHour();
                 int dayIndex = day.ordinal() + 1; // +1 because column 0 is time
 
                 for (int hour = startHour; hour < endHour; hour++) {
                     StackPane cell = (StackPane) calendarGrid.getChildren().get((hour - START_HOUR + 1) * DAYS.length + dayIndex);
-                    // color the event block based on the color given in its labe
-                    if (((Event) TimeBlock).getLabel() != null && TimeBlock instanceof Event == true) {
-                        cell.setStyle("-fx-background-color: " + ((Event)TimeBlock).getLabel().getColor() + ";");
+                    // Set background color based on the event's label
+                    if (timeBlock instanceof Event) {
+                        Event event = (Event) timeBlock;
+                        if (event.getLabel() != null) {
+                            cell.setStyle("-fx-background-color: " + event.getLabel().getColor() + "; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
+                        }
                     } else {
-                        cell.setStyle("-fx-background-color: rgb(156, 162, 157);");
-                    
+                        cell.setStyle("-fx-background-color: #A0A2A1; -fx-border-color: #B8D8B1; -fx-border-width: 1px;");
                     }
-                    Label eventLabel = new Label(TimeBlock.getName());
-                    eventLabel.setStyle("-fx-font-weight: bold;");
+                    // Add event label inside the cell
+                    Label eventLabel = new Label(timeBlock.getName());
+                    eventLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #333;");
+                    eventLabel.setPadding(new Insets(5));
                     cell.getChildren().add(eventLabel);
                 }
             }
         }
 
+        // Scrollable view for the calendar grid
         ScrollPane scrollPane = new ScrollPane(calendarGrid);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
 
-        Scene scene = new Scene(scrollPane, 900, 600);
+        // Set the scene and stage
+        Scene scene = new Scene(scrollPane, 1000, 700);  // Increased width for better readability
         primaryStage.setScene(scene);
         primaryStage.show();
     }
